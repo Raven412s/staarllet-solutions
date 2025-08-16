@@ -15,7 +15,7 @@ const HeroSection = () => {
                 <section id="hero" className="w-full min-h-screen flex flex-col items-center justify-center pt-20 px-4 bg-[#101c16] rounded-[1.2rem]">
                     <div className="max-w-6xl mx-auto text-center mb-12 ">
                         <Copy>
-                            <h1 className="text-4xl md:text-6xl font-bold text-green-50 mb-6 leading-tight">
+                            <h1 className="text-4xl md:text-6xl font-bold text-green-50 mb-6 leading-[1.38]">
                                 Connecting talents<br />with startups
                             </h1>
                             <p className="text-lg md:text-2xl text-white/60 mb-8">

@@ -4,6 +4,7 @@ import Copy from './text-reveal/Copy';
 import { cn } from '@/lib/utils';
 import { servicesData } from '@/data/servicesData';
 import ServiceShowcase from './ServiceShowcase';
+import Image from 'next/image';
 
 const ServiceSection = () => {
     return (
@@ -29,7 +30,7 @@ const ServiceSection = () => {
                 <div className="w-full">
                     <div className="lg:w-4xl w-full space-y-7 pt-6">
                         <Copy>
-                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.2] text-[#101c16] tracking-tight font-bold ">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.38] text-[#101c16] tracking-tight font-bold ">
                                 {servicesData.heroSection.title}
                             </h1>
                         </Copy>
@@ -45,12 +46,13 @@ const ServiceSection = () => {
                             return (
                                 <div key={category.title} className="flex w-full flex-col gap-6 items-start justify-center">
                                     <Copy><h1 className="text-2xl font-semibold capitalize w-max">{category.title}</h1></Copy>
-                                    <Copy>
-                                        <div className="overflow-hidden relative rounded-4xl border border-green-950/20 h-fit w-full shadow">
-                                            <img
+                                    <Copy className='w-full'>
+                                        <div className="overflow-hidden relative rounded-4xl border border-green-950/20 aspect-video w-full shadow">
+                                            <Image
                                                 src={category.image}
                                                 alt={`${category.title} category image`}
                                                 className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                                                fill
                                             />
                                         </div>
                                     </Copy>

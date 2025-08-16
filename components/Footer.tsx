@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { FaLinkedin, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowUp } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -26,10 +27,11 @@ export default function Footer() {
                         <div className="lg:col-span-2 space-y-6">
                             <div className="flex items-center gap-3">
                                 <div className="relative">
-                                    <img
+                                    <Image
                                         src="/staarllet-logo.svg"
                                         alt="Staarllet Logo"
                                         className="h-12 w-auto drop-shadow-sm"
+                                        fill
                                     />
                                     <div className="absolute -inset-2 bg-white/50 rounded-lg -z-10 blur-sm" />
                                 </div>
@@ -79,7 +81,7 @@ export default function Footer() {
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className="block text-gray-600 hover:text-green-700 transition-colors duration-200 text-sm font-medium hover:translate-x-1 transform transition-transform"
+                                            className="block text-gray-600 hover:text-green-700 duration-200 text-sm font-medium hover:translate-x-1 transform transition-transform"
                                         >
                                             {link.label}
                                         </Link>
@@ -100,7 +102,7 @@ export default function Footer() {
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className="block text-gray-600 hover:text-green-700 transition-colors duration-200 text-sm font-medium hover:translate-x-1 transform transition-transform"
+                                            className="block text-gray-600 hover:text-green-700 duration-200 text-sm font-medium hover:translate-x-1 transform transition-transform"
                                         >
                                             {link.label}
                                         </Link>

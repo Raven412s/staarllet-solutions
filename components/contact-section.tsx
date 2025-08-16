@@ -1,22 +1,21 @@
 "use client"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import SectionWrapper from "./wrapper/SectionWrapper"
 import { cn } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
 import Copy from "./text-reveal/Copy"
+import SectionWrapper from "./wrapper/SectionWrapper"
 
 // Form validation schema
 const formSchema = z.object({
@@ -83,7 +82,7 @@ export const ContactSection = () => {
               <div className="space-y-4 w-full">
                 <h2 className="text-4xl leading-[1.3] text-green-50 tracking-tight font-bold">Get in Touch</h2>
                 <p className="text-xl leading-[1.1] text-green-100/60 tracking-normal font-medium">
-                  Have questions or need assistance? We're here to help!
+                  Have questions or need assistance? We&apos;re here to help!
                 </p>
               </div>
 

@@ -15,6 +15,7 @@ interface CopyProps {
     children: ReactElement | ReactElement[];
     animateOnScroll?: boolean;
     delay?: number;
+    className?: string;
 }
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
@@ -23,6 +24,7 @@ export default function Copy({
     children,
     animateOnScroll = true,
     delay = 0,
+    className
 }: CopyProps): ReactElement {
     const containerRef = useRef<HTMLDivElement>(null);
     const elementRef = useRef<HTMLElement[]>([]);
@@ -105,13 +107,15 @@ export default function Copy({
     );
 
     if (Children.count(children) === 1 && isValidElement(children)) {
-        return React.cloneElement(children as React.ReactElement<any>, {
-            ref: containerRef,
-        });
+        return (
+            <span ref={containerRef} className={className}>
+                {children}
+            </span>
+        );
     }
 
     return (
-        <div ref={containerRef} className='w-full' data-copy-wrapper="true">
+        <div ref={containerRef} className={className} data-copy-wrapper="true">
             {children}
         </div>
     );

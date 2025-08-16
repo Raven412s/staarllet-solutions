@@ -4,8 +4,9 @@ import gsap from "gsap";
 import { CustomEase } from 'gsap/CustomEase';
 import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect } from 'react';
-import { IconType } from "react-icons";
 
 gsap.registerPlugin(SplitText, CustomEase);
 
@@ -25,19 +26,12 @@ interface NavProps {
     topLinks: LinkItem[];
 }
 
-export default function Nav({ links, tags, topLinks, children }: NavProps) {
+export default function Nav({ links, tags, children }: NavProps) {
 
     useEffect(() => {
         CustomEase.create("hop", ".87, 0, .13, 1");
 
         const lenis = new Lenis();
-        let animationFrameId: number;
-        const raf = (time: number): void => {
-            lenis.raf(time);
-            animationFrameId = requestAnimationFrame(raf);
-        };
-        animationFrameId = requestAnimationFrame(raf);
-
         const textContainers = document.querySelectorAll<HTMLElement>(".menu-col");
         const spliTextByContainer: SplitText[][] = [];
 
@@ -204,9 +198,9 @@ export default function Nav({ links, tags, topLinks, children }: NavProps) {
             >
                 <div className="fixed top-0 left-0 w-screen px-8 py-4 flex justify-between items-center pointer-events-auto text-[#7f7f7f] z-20 menu-bar ">
                     <div className="h-14 menu-logo">
-                        <a className="a" href="/">
-                            <img className="w-full h-full object-cover img mix-blend-difference" src="/staarllet-logo.jpg" alt="Staarllet Logo" />
-                        </a>
+                        <Link className="a" href="/">
+                            <Image className="w-full h-full object-cover img mix-blend-difference" src="/staarllet-logo.jpg" alt="Staarllet Logo" width={80} height={80}/>
+                        </Link>
                     </div>
 
                     {/* <div className="hidden lg:flex flex-col leading-none gap-1  menu-top-links">
@@ -234,7 +228,7 @@ export default function Nav({ links, tags, topLinks, children }: NavProps) {
                 >
                     <div className="flex w-full h-full pointer-events-auto menu-overlay-content" style={{ willChange: 'transform' }}>
                         <div className="flex-2 hidden md:block opacity-25 menu-media-wrapper" style={{ willChange: 'opacity' }}>
-                            <img className="w-full h-full object-cover img" src="/staarllet-logo.jpg" alt="Logo Image" />
+                            <Image className="w-full h-full object-cover img" src="/staarllet-logo.jpg" alt="Logo Image" width={1000} height={1200} />
                         </div>
                         <div className="relative flex flex-3 menu-content-wrapper">
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[75%] p-8 flex flex-col lg:flex-row gap-8 md:gap-20 items-end menu-content-main">
