@@ -2,15 +2,17 @@
 import { SectionThemeProvider } from '@/context/SectionThemeContext';
 import Nav from '@/components/Nav';
 import { links, tags, topLinks } from '@/data/nav';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, Suspense } from 'react';
 
 export default function Layout({ children }: PropsWithChildren) {
     return (
         <>
             <Nav links={links} tags={tags} topLinks={topLinks}>
-            <SectionThemeProvider>
-                {children}
-            </SectionThemeProvider>
+                <Suspense>
+                    <SectionThemeProvider>
+                        {children}
+                    </SectionThemeProvider>
+                </Suspense>
             </Nav>
         </>
     );
