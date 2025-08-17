@@ -50,29 +50,27 @@ export default function ServiceShowcase() {
         {filtered.map(service => {
           const IconComponent = service.icon;
           return (
-            <Copy key={service.id}>
-              <div className="bg-green-600/10 rounded-2xl shadow border border-green-400/30 p-6 flex flex-col h-full">
-                {IconComponent && (
-                  <div className="bg-green-800 p-2.5 rounded-full text-center flex items-center justify-center mb-4 w-fit h-fit">
-                    <IconComponent className="text-3xl text-green-100" />
-                  </div>
-                )}
-                <Copy><h3 className="text-lg font-semibold mb-2 text-green-700">{service.title}</h3></Copy>
-                <Copy><p className="text-gray-700 text-sm mb-4 flex-1">{service.description}</p></Copy>
-                <ul className="mb-4 list-disc list-inside text-xs text-gray-500 space-y-1">
-                  {service.features.map((feature, i) => (
-                    <li key={i}>
-                      <Copy>
-                        <span className="inline-flex">{feature}</span>
-                      </Copy>
-                    </li>
-                  ))}
-                </ul>
-                <button className="mt-auto text-green-700 text-sm font-medium hover:underline flex items-center gap-1">
-                  <Copy><span className="flex items-center justify-center gap-1"><span className="inline-flex">More details</span> <span aria-hidden="true" className="inline-flex"> <ChevronRight className="size-4" /> </span></span></Copy>
-                </button>
-              </div>
-            </Copy>
+            <div key={service.id} className="bg-green-600/10 rounded-2xl shadow border border-green-400/30 p-6 flex flex-col h-full">
+              {IconComponent && (
+                <div className="bg-green-800 p-2.5 rounded-full text-center flex items-center justify-center mb-4 w-fit h-fit">
+                  <IconComponent className="text-3xl text-green-100" />
+                </div>
+              )}
+              <Copy><h3 className="text-lg font-semibold mb-2 text-green-700">{service.title}</h3></Copy>
+              <Copy><p className="text-gray-700 text-sm flex-1">{service.description}</p></Copy><br />
+              <ul className="mb-4 list-disc list-inside text-xs text-gray-500 space-y-1">
+                {service.features.map((feature, i) => (
+                  <li key={i}>
+                    <Copy className="inline-flex">
+                      <span >{feature}</span>
+                    </Copy>
+                  </li>
+                ))}
+              </ul>
+              <button className="mt-auto text-green-700 text-sm font-medium hover:underline flex items-center gap-1">
+                <Copy><span className="flex items-center justify-center gap-1"><span className="inline-flex">More details</span> <span aria-hidden="true" className="inline-flex"> <ChevronRight className="size-4" /> </span></span></Copy>
+              </button>
+            </div>
           );
         })}
       </div>

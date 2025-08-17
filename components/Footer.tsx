@@ -75,8 +75,8 @@ export default function Footer() {
                                         { href: "#services", label: "Our Services" },
                                         { href: "#about", label: "About Us" },
                                         { href: "#contact", label: "Contact" },
-                                        { href: "/careers", label: "Careers" },
-                                        { href: "/blog", label: "Blog" }
+                                        // { href: "/careers", label: "Careers" },
+                                        { href: "/blogs", label: "Blog" }
                                     ].map((link) => (
                                         <Link
                                             key={link.href}
@@ -96,8 +96,8 @@ export default function Footer() {
                                     {[
                                         { href: "/privacy", label: "Privacy Policy" },
                                         { href: "/terms", label: "Terms of Service" },
-                                        { href: "/cookie-policy", label: "Cookie Policy" },
-                                        { href: "/support", label: "Support Center" }
+                                        // { href: "/cookie-policy", label: "Cookie Policy" },
+                                        // { href: "/support", label: "Support Center" }
                                     ].map((link) => (
                                         <Link
                                             key={link.href}

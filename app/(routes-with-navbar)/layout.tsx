@@ -1,19 +1,20 @@
-// app/layout.tsx or app/page.tsx
-import { SectionThemeProvider } from '@/context/SectionThemeContext';
-import Nav from '@/components/Nav';
-import { links, tags, topLinks } from '@/data/nav';
-import { PropsWithChildren, Suspense } from 'react';
+import Footer from '@/components/Footer'
+import Nav from '@/components/Nav'
+import { SectionThemeProvider } from '@/context/SectionThemeContext'
+import { links, tags, topLinks } from '@/data/nav'
+import React, { PropsWithChildren, Suspense } from 'react'
 
-export default function Layout({ children }: PropsWithChildren) {
+const layout = ({ children }: PropsWithChildren) => {
     return (
-        <>
+        <Suspense>
             <Nav links={links} tags={tags} topLinks={topLinks}>
-                <Suspense>
-                    <SectionThemeProvider>
-                        {children}
-                    </SectionThemeProvider>
-                </Suspense>
+                <SectionThemeProvider>
+                    {children}
+                </SectionThemeProvider>
+                <Footer />
             </Nav>
-        </>
-    );
+        </Suspense>
+    )
 }
+
+export default layout

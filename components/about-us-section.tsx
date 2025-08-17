@@ -35,75 +35,72 @@ export const AboutUsSection = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Column - Text Content */}
             <div className="space-y-6 ">
-              <Copy><p className="text-lg mb-6 text-gray-700">Staarllet Staffing Solution is a trusted talent partner, committed to bridging the gap between top talent and leading organizations across IT and non-IT sectors. Since our inception, we&apos;ve been helping businesses scale with the right people and empowering candidates to become job-ready through skill development and career support.</p></Copy>
-              <Copy>
-                <div className="bg-green-50 p-6 rounded-lg border border-green-100">
-                  <div className="flex items-start space-x-4">
-                    <Database className="h-8 w-8 text-green-700 mt-1 flex-shrink-0" />
-                    <div>
-                      <Copy><h3 className="text-xl font-semibold text-gray-900 mb-2">Our Talent Network</h3></Copy>
-                      <Copy><p className="text-gray-700">With a growing database of over <span className="font-bold text-green-700">20,000+ active candidates</span>, categorized by year of hiring and skill sets, we ensure quick and accurate talent matching tailored to every client&apos;s needs.</p></Copy>
-                    </div>
+              <Copy><p className="text-lg text-gray-700">Staarllet Staffing Solution is a trusted talent partner, committed to bridging the gap between top talent and leading organizations across IT and non-IT sectors. Since our inception, we&apos;ve been helping businesses scale with the right people and empowering candidates to become job-ready through skill development and career support.</p></Copy>
+              <br />
+              <div className="bg-green-50 p-6 rounded-lg border border-green-100">
+                <div className="flex items-start space-x-4">
+                  <Database className="h-8 w-8 text-green-700 mt-1 flex-shrink-0" />
+                  <div className='flex flex-col gap-2'>
+                    <Copy><h3 className="text-xl font-semibold text-gray-900">Our Talent Network</h3></Copy>
+                    <Copy><p className="text-gray-700">With a growing database of over <span className="font-bold text-green-700">20,000+ active candidates</span>, categorized by year of hiring and skill sets, we ensure quick and accurate talent matching tailored to every client&apos;s needs.</p></Copy>
                   </div>
                 </div>
-              </Copy>
+              </div>
               <Copy><p className="text-lg text-gray-700">Our deep industry insight and personalized approach have earned us the continued trust of <span className="font-semibold">45+ companies</span> that rely on us for smart, scalable hiring and workforce solutions.</p></Copy>
             </div>
 
             {/* Right Column - Image or Stats */}
-            <Copy>
-              <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-                <Copy>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                    <Award className="h-8 w-8 text-green-700 mr-3" />
-                    What Sets Us Apart
-                  </h3>
-                </Copy>
 
-                <ul className="space-y-5">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                    <Copy>
-                      <span className="text-gray-700">
-                        <strong>End-to-End Hiring</strong> across all sectors — IT, Engineering, Finance, Healthcare, Retail, and more
-                      </span>
-                    </Copy>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                    <Copy>
-                      <span className="text-gray-700">
-                        <strong>Customized Outsourcing Solutions</strong> to save time, cost, and resources
-                      </span>
-                    </Copy>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                    <Copy>
-                      <span className="text-gray-700">
-                        <strong>Career Skill Development</strong> to make candidates industry-ready
-                      </span>
-                    </Copy>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                    <Copy>
-                      <span className="text-gray-700">
-                        <strong>Resume and Interview Guidance</strong> from experts for faster job placements
-                      </span>
-                    </Copy>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
-                    <Copy>
-                      <span className="text-gray-700">
-                        <strong>Long-Term Partnerships</strong> with companies seeking quality talent and strategic growth
-                      </span>
-                    </Copy>
-                  </li>
-                </ul>
-              </div>
-            </Copy>
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+              <Copy>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                  <Award className="h-8 w-8 text-green-700 mr-3" />
+                  What Sets Us Apart
+                </h3>
+              </Copy>
+              <ul className="space-y-5">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
+                  <Copy>
+                    <span className="text-gray-700">
+                      <strong>End-to-End Hiring</strong> across all sectors — IT, Engineering, Finance, Healthcare, Retail, and more
+                    </span>
+                  </Copy>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
+                  <Copy>
+                    <span className="text-gray-700">
+                      <strong>Customized Outsourcing Solutions</strong> to save time, cost, and resources
+                    </span>
+                  </Copy>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
+                  <Copy>
+                    <span className="text-gray-700">
+                      <strong>Career Skill Development</strong> to make candidates industry-ready
+                    </span>
+                  </Copy>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
+                  <Copy>
+                    <span className="text-gray-700">
+                      <strong>Resume and Interview Guidance</strong> from experts for faster job placements
+                    </span>
+                  </Copy>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-1 mr-3 flex-shrink-0" />
+                  <Copy>
+                    <span className="text-gray-700">
+                      <strong>Long-Term Partnerships</strong> with companies seeking quality talent and strategic growth
+                    </span>
+                  </Copy>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Mission Statement */}
