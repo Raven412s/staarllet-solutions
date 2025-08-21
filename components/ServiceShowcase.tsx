@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 import Copy from "./text-reveal/Copy";
+import Link from "next/link";
 
 
 // Create categories array from actual data
@@ -67,9 +68,9 @@ export default function ServiceShowcase() {
                   </li>
                 ))}
               </ul>
-              <button className="mt-auto text-green-700 text-sm font-medium hover:underline flex items-center gap-1">
+              <Link href={`/services/${service.slug}`} className="mt-auto text-green-700 text-sm font-medium hover:underline flex items-center gap-1">
                 <Copy><span className="flex items-center justify-center gap-1"><span className="inline-flex">More details</span> <span aria-hidden="true" className="inline-flex"> <ChevronRight className="size-4" /> </span></span></Copy>
-              </button>
+              </Link>
             </div>
           );
         })}

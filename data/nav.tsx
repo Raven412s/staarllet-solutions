@@ -3,11 +3,11 @@ import { FaFacebook, FaInstagram } from "react-icons/fa6";
 import { PiLinkedinLogo } from "react-icons/pi";
 
 export const links: LinkItem[] = [
-    { label: "Home.", href: "#home" },
-    { label: "Services.", href: "#services" },
-    { label: "Jobs.", href: "#jobs" },
-    { label: "Companies.", href: "#companies" },
-    { label: "Partners.", href: "#partners" }
+    { label: "Home.", href: "/" },
+    { label: "Services.", href: "/services" },
+    { label: "Jobs.", href: "/jobs" },
+    { label: "Companies.", href: "/companies" },
+    { label: "Partners.", href: "/partners" }
 ];
 
 export const tags: TagItem[] = [

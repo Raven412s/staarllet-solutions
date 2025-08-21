@@ -10,7 +10,7 @@ const Blog = () => {
             padding="sm"
             background="transparent"
             maxWidth="full"
-            className="flex items-center justify-center h-full w-full gap-2 flex-col pointer-events-auto"
+            className="flex items-center min-h-screen justify-center h-full w-full gap-2 flex-col pointer-events-auto"
         >
             <h1 className='text-4xl mb-5'>Blogs Page</h1>
 
