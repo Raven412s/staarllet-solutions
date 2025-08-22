@@ -390,7 +390,7 @@ export async function POST(req: Request) {
     transporter
       .sendMail({
         from: `"Website Enquiry" <${process.env.SMTP_USER}>`,
-        to: process.env.SMTP_USER,
+        to: 'hr@staarllet.com',
         subject: "🚀 New Customer Enquiry - Action Required",
         html: emailHtml,
       })

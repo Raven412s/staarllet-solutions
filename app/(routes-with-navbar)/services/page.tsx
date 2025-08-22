@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services | Staarllet Solutions",
+  description: "Explore our recruitment, branding, and media services at Staarllet Solutions. We help you hire, grow, and stand out in Delhi and beyond.",
+};
 import ServiceSection from '@/components/ServiceSection'
 import SectionWrapper from '@/components/wrapper/SectionWrapper'
 import React from 'react'

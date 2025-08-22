@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Blogs | Staarllet Solutions",
+    description: "Read the latest blogs from Staarllet Solutions on recruitment, branding, media, and career growth in Delhi and India.",
+};
 import SectionWrapper from '@/components/wrapper/SectionWrapper'
 import Image from 'next/image'
 import Link from 'next/link'

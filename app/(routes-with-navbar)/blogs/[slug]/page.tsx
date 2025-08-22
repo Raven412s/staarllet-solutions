@@ -1,11 +1,19 @@
-"use client"
-import SectionWrapper from '@/components/wrapper/SectionWrapper'
-import { useParams } from 'next/navigation'
-import React from 'react'
+import SectionWrapper from '@/components/wrapper/SectionWrapper';
+import type { Metadata } from "next";
 
-const SingleBLogPage = () => {
-    const { slug } = useParams()
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const awaitedParams = await params
+    const title = awaitedParams.slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    return {
+        title: `${title} | Blog | Staarllet Solutions`,
+        description: `Read about ${title} at Staarllet Solutions. Insights on recruitment, branding, and media.`
+    };
+}
+
+const SingleBLogPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+    const awaitedParams = await params
+    const { slug } = awaitedParams
     return (
         <SectionWrapper
             navbarSpacing="loose"

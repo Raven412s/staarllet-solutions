@@ -12,7 +12,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const updated = await Enquiry.findByIdAndUpdate(id, { called }, { new: true });
     if (!updated) return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
     return NextResponse.json({ success: true, enquiry: updated });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false, error: "Server error" }, { status: 500 });
   }
 }

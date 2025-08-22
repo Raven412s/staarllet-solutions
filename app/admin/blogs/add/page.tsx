@@ -76,7 +76,7 @@ const AddBlog = () => {
       } else {
         alert("Image upload failed");
       }
-    } catch (err) {
+    } catch {
       alert("Image upload error");
     }
   }, [editor]);
