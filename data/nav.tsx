@@ -6,7 +6,7 @@ export const links: LinkItem[] = [
     { label: "Home.", href: "/" },
     { label: "Services.", href: "/services" },
     { label: "Jobs.", href: "/jobs" },
-    { label: "Companies.", href: "/companies" },
+    { label: "Courses.", href: "/courses" },
     { label: "Partners.", href: "/partners" }
 ];
 

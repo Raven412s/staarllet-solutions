@@ -10,7 +10,7 @@ export default function Footer() {
     };
 
     return (
-        <footer className="relative w-full mt-24 overflow-hidden">
+        <footer className="relative w-full overflow-hidden">
             {/* Gradient background */}
             <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-emerald-25 to-teal-50" />
 
