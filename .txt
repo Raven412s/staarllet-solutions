@@ -1,76 +1,65 @@
-Outsourcing Solutions
-
-Maximize efficiency and reduce operational burdens with our reliable outsourcing services.
-
-We offer:
-
-IT Outsourcing: 
-Get access to top-tier tech talent for development, support, cybersecurity, and more.
-
-Non-IT Outsourcing: 
-Delegate essential roles like customer service, data entry, and admin operations to our skilled professionals.
-
-We manage the talent. You focus on growth.
-
-End-to-End Hiring Services
-
-Need the right people, fast?
-Our recruitment solutions span all industry sectors, including:
-
-IT & Tech
-Healthcare
-Finance
-Manufacturing
-Retail
-Logistics, and more
-
-Whether it's permanent hiring, contract staffing, or bulk recruitment — we ensure quality candidates, faster turnarounds, and perfect job fits.
-
-Talent & Workforce Optimization
-
-Our Talent Aiodisation Solution helps you align your workforce strategy with business goals.
-
-We assist in:
-
-Talent mapping and benchmarking
-Strategic workforce planning
-Reducing hiring costs
-Improving employee retention
-Smart talent strategies for sustainable business success.
-Skill Development & Training
-
-Empower your team or yourself with industry-relevant skills through our curated courses:
-
-Technical Skill Development: 
-Programming, 
-cybersecurity, 
-cloud computing, 
-and more.
-
-Professional Skills: 
-Communication, 
-leadership, 
-project management.
-
-Upskill to stay ahead in a fast-changing job market.
-
-HR Certification Courses
-
-Advance your HR career with certifications designed by industry experts.
-
-Ideal for:
-
-Aspiring HR professionals
-Working HR executives
-Business managers handling HR functions
-Gain practical knowledge, tools, and credentials that boost your value in the workplace.
-Resume Editing & Career Guidance
-
-Stand out in a competitive job market with personalized support:
-
-Expert Resume Writing & Editing
-LinkedIn Profile Optimization
-1-on-1 Career Coaching & Interview Prep
-
-
-https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3499.9108239063466!2d77.28564837550299!3d28.692314075632133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjjCsDQxJzMyLjMiTiA3N8KwMTcnMTcuNiJF!5e0!3m2!1sen!2sin!4v1755247960235!5m2!1sen!2sin
+db.blogs.insertOne({
+  "slug": "getting-started-with",
+  "title": "Getting Started with Next.js: A Comprehensive Guide",
+  "description": "Learn how to build modern web applications with Next.js, React framework that enables server-side rendering and static site generation.",
+  "coverImg": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+  "blogId": "blog_001_nextjs_guide",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": { "level": 1 },
+        "content": [{ "type": "text", "text": "Getting Started with Next.js" }]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          { "type": "text", "text": "Next.js is a React framework that enables server-side rendering and static site generation. It's become one of the most popular tools for building modern web applications." }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 2 },
+        "content": [{ "type": "text", "text": "Why Choose Next.js?" }]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "Server-side rendering out of the box" }]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "Static site generation capabilities" }]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "API routes built-in" }]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "createdBy": ObjectId("68a9d1c7fe970d553dc6da92"),
+  "approved": false,
+  "published": false,
+  "createdAt": new Date("2023-10-15T10:00:00Z"),
+  "updatedAt": new Date("2023-10-16T14:30:00Z")
+})

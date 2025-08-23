@@ -1,18 +1,20 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
-  Package, 
-  BarChart3,
+import { cn } from '@/lib/utils';
+import {
+  BookOpen,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  FileText,
+  LayoutDashboard,
+  MessageCircle,
+  Settings,
+  Users,
+  Wrench
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 
 interface AdminSidebarProps {
   isCollapsed: boolean;
@@ -31,14 +33,24 @@ const menuItems = [
     icon: Users,
   },
   {
-    name: 'Products',
-    href: '/admin/products',
-    icon: Package,
+    name: 'Enquiries',
+    href: '/admin/enquiries',
+    icon: MessageCircle,
   },
   {
-    name: 'Analytics',
-    href: '/admin/analytics',
-    icon: BarChart3,
+    name: 'Blogs',
+    href: '/admin/blogs',
+    icon: FileText,
+  },
+  {
+    name: 'Services',
+    href: '/admin/services',
+    icon: Wrench,
+  },
+  {
+    name: 'Courses',
+    href: '/admin/courses',
+    icon: BookOpen,
   },
   {
     name: 'Settings',
@@ -53,7 +65,7 @@ export function AdminSidebar({ isCollapsed, onToggle }: AdminSidebarProps) {
   return (
     <aside
       className={cn(
-        'relative flex flex-col bg-background border-r transition-all duration-300 ease-in-out',
+        'fixed left-0 top-0 h-screen flex flex-col bg-background border-r transition-all duration-300 ease-in-out z-40',
         isCollapsed ? 'w-16' : 'w-64'
       )}
     >
@@ -73,7 +85,7 @@ export function AdminSidebar({ isCollapsed, onToggle }: AdminSidebarProps) {
       </div>
 
       {/* Navigation Items */}
-      <nav className="flex-1 p-2">
+      <nav className="flex-1 p-2 overflow-y-auto">
         <ul className="space-y-1">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;

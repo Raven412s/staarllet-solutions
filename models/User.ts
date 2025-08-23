@@ -6,14 +6,17 @@ export interface IUser extends Document {
   role: "Admin" | "Public";
   email: string;
   clerkId: string;
-  id: string; // UUID
-  password?: string; // optional, only if you support non-Clerk login
+  id: string;
+  password?: string;
   myBlogs?: mongoose.Types.ObjectId[];
   resume?: string;
   image?: string;
   enrolledCourses?: mongoose.Types.ObjectId[];
   achievements?: string[];
   myEnquiries?: mongoose.Types.ObjectId[];
+  isBanned?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema: Schema = new Schema(
@@ -24,19 +27,40 @@ const UserSchema: Schema = new Schema(
     clerkId: { type: String, required: true, unique: true },
     id: {
       type: String,
-      default: () => uuidv4(), // generate UUID if not provided
+      default: () => uuidv4(),
       unique: true,
       required: true,
     },
-    password: { type: String }, // hashed if you support email/pass
+    password: { type: String },
     myBlogs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }],
-    resume: { type: String }, // PDF file URL
-    image: { type: String }, // avatar URL
+    resume: { type: String },
+    image: { type: String },
     enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     achievements: [{ type: String }],
     myEnquiries: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enquiry" }],
-  },
-  { timestamps: true }
+    isBanned: { 
+      type: Boolean, 
+      default: false
+    },
+    createdAt: { 
+      type: Date, 
+      default: Date.now 
+    },
+    updatedAt: { 
+      type: Date, 
+      default: Date.now 
+    },
+  }
 );
+
+// Middleware to update updatedAt before saving
+UserSchema.pre('save', function(next) {
+  this.updatedAt = new Date();
+  next();
+});
+
+UserSchema.pre('findOneAndUpdate', function() {
+  this.set({ updatedAt: new Date() });
+});
 
 export default mongoose.models.User || mongoose.model<IUser>("User", UserSchema);

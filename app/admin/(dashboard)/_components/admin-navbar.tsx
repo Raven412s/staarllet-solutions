@@ -2,20 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Search, 
-  Bell, 
-  Menu,
-  User
-} from 'lucide-react';
+import { UserButton } from '@clerk/nextjs';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  Bell,
+  Menu,
+  Search
+} from 'lucide-react';
 
 interface AdminNavbarProps {
   isSidebarCollapsed: boolean;
@@ -24,7 +16,7 @@ interface AdminNavbarProps {
 
 export function AdminNavbar({ isSidebarCollapsed, onToggleSidebar }: AdminNavbarProps) {
   return (
-    <header className="flex items-center justify-between p-4 border-b bg-background">
+    <header className="flex items-center justify-between p-4 border-b bg-background sticky top-0 z-30">
       {/* Left Side */}
       <div className="flex items-center space-x-4">
         <Button
@@ -55,21 +47,7 @@ export function AdminNavbar({ isSidebarCollapsed, onToggleSidebar }: AdminNavbar
         </Button>
 
         {/* User Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <User size={20} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <UserButton/>
       </div>
     </header>
   );

@@ -16,23 +16,27 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <AdminSidebar 
-        isCollapsed={isSidebarCollapsed} 
-        onToggle={toggleSidebar} 
-      />
+    <div className="flex min-h-screen bg-background">
+      {/* Fixed Sidebar */}
+      <div className={isSidebarCollapsed ? 'w-16' : 'w-64'}>
+        <AdminSidebar 
+          isCollapsed={isSidebarCollapsed} 
+          onToggle={toggleSidebar} 
+        />
+      </div>
       
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Navbar */}
-        <AdminNavbar 
-          isSidebarCollapsed={isSidebarCollapsed}
-          onToggleSidebar={toggleSidebar}
-        />
+      <div className="flex-1 flex flex-col min-h-0">
+        {/* Sticky Navbar */}
+        <div className="sticky top-0 z-30">
+          <AdminNavbar 
+            isSidebarCollapsed={isSidebarCollapsed}
+            onToggleSidebar={toggleSidebar}
+          />
+        </div>
         
         {/* Page Content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
       </div>

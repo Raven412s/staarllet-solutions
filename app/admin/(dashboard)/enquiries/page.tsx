@@ -67,7 +67,7 @@ const EnquiryBox = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-2xl">
+    <div className="p-4 bg-white shadow-md rounded-2xl pointer-events-auto">
       <h2 className="text-xl font-semibold mb-4">Enquiries</h2>
       {enquiries.length > 0 ? (
         <Table>
