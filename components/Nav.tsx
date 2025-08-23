@@ -1,18 +1,24 @@
 "use client"
+import { Sheet, SheetClose, SheetContent, SheetTrigger, } from "@/components/ui/sheet";
 import "@/styles/navbar.css";
+import {
+    SignInButton,
+    SignUpButton,
+    SignedIn,
+    SignedOut,
+    UserButton
+} from '@clerk/nextjs';
 import gsap from "gsap";
 import { CustomEase } from 'gsap/CustomEase';
-import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
-import { FiSearch, FiMenu } from 'react-icons/fi';
-import { HiOutlineInbox } from 'react-icons/hi';
+import { FiMenu, FiSearch } from 'react-icons/fi';
 import { MdCall } from "react-icons/md";
 import RequestCallbackModal from "./modals/request-a-callback";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetClose, } from "@/components/ui/sheet"
 import { DialogTitle } from "./ui/dialog";
 
 gsap.registerPlugin(SplitText, CustomEase, ScrollTrigger);
@@ -121,9 +127,17 @@ export const Nav = ({ links }: NavProps) => {
                     <button className="hidden md:flex w-9 h-9 items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
                         <FiSearch className="w-5 h-5 text-gray-700" />
                     </button>
-                    <button className="hidden md:flex w-9 h-9 items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
-                        <HiOutlineInbox className="w-5 h-5 text-gray-700" />
-                    </button>
+                    <SignedOut>
+                        <SignInButton />
+                        <SignUpButton>
+                            <Button className="rounded-xl" variant={"outline"} >
+                                Sign Up
+                            </Button>
+                        </SignUpButton>
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton />
+                    </SignedIn>
                     <RequestCallbackModal>
                         {scrolled ? (
                             <Button size="icon" className="rounded-xl">
