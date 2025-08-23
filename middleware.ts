@@ -6,7 +6,7 @@ const isProtectedRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, req) => {
   // Exclude admin-sign-in page
-  if (req.nextUrl.pathname.startsWith('/admin-sign-in')) return
+  if (req.nextUrl.pathname.startsWith('/login')) return
 
   if (isProtectedRoute(req)) {
     await auth.protect()

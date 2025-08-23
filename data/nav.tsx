@@ -5,7 +5,7 @@ import { PiLinkedinLogo } from "react-icons/pi";
 export const links: LinkItem[] = [
     { label: "Home.", href: "/" },
     { label: "Services.", href: "/services" },
-    { label: "Jobs.", href: "/jobs" },
+    { label: "About.", href: "/about" },
     { label: "Courses.", href: "/courses" },
     { label: "Partners.", href: "/partners" }
 ];

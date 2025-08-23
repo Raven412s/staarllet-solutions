@@ -1,21 +1,13 @@
 import SectionWrapper from '@/components/wrapper/SectionWrapper';
-import { connectToDb } from '@/lib/mongodb';
+import { getUser } from '@/lib/getUser';
+import '@/models'; // Ensures all models are registered
 import { IBlog } from '@/models/Blog';
 import { IEnquiry } from '@/models/Enquiry';
-import User from '@/models/User';
-import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
-import '@/models'; // Ensures all models are registered
 
 const MyAccountPage = async () => {
-    const session = await auth();
-    const userId = session.userId;
 
-    await connectToDb();
-    const user = await User.findOne({ clerkId: userId })
-        .populate('myBlogs')
-        // .populate('enrolledCourses')
-        .populate('myEnquiries');
+    const user = await getUser()
 
     if (!user) {
         return (
