@@ -48,25 +48,25 @@ async function getBlog(slug: string): Promise<IBlog | null> {
 }
 
 // Function to render the blog content based on its format
-function renderBlogContent(content: string | object) {
-    if (typeof content === 'string') {
-        return <div dangerouslySetInnerHTML={{ __html: content }} />;
-    }
+// function renderBlogContent(content: string | object) {
+//     if (typeof content === 'string') {
+//         return <div dangerouslySetInnerHTML={{ __html: content }} />;
+//     }
 
-    // Handle JSON content (like TipTap editor format)
-    if (typeof content === 'object' && content !== null) {
-        // You might want to use a proper renderer for your editor format
-        // This is a simplified example
-        return (
-            <div className="prose max-w-none">
-                <p>This blog content is in a structured format that requires a specific renderer.</p>
-                <p>Consider implementing a renderer for your editor&apos;s output format.</p>
-            </div>
-        );
-    }
+//     // Handle JSON content (like TipTap editor format)
+//     if (typeof content === 'object' && content !== null) {
+//         // You might want to use a proper renderer for your editor format
+//         // This is a simplified example
+//         return (
+//             <div className="prose max-w-none">
+//                 <p>This blog content is in a structured format that requires a specific renderer.</p>
+//                 <p>Consider implementing a renderer for your editor&apos;s output format.</p>
+//             </div>
+//         );
+//     }
 
-    return <p>No content available.</p>;
-}
+//     return <p>No content available.</p>;
+// }
 
 export default async function BlogPage({ params }: { params: Promise<{ slug: string }> }) {
     const {slug} =await params

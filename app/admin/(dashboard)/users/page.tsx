@@ -1,55 +1,56 @@
 'use client';
 
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { IUser } from '@/models/User';
 import {
-    Ban,
-    Edit,
-    Eye,
-    Filter,
-    Mail,
-    MoreHorizontal,
-    Search,
-    Trash2,
-    User
+  Ban,
+  Edit,
+  Eye,
+  Filter,
+  Mail,
+  MoreHorizontal,
+  Search,
+  Trash2,
+  User
 } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 
@@ -97,8 +98,8 @@ export default function UsersPage() {
     // Apply search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      result = result.filter(user => 
-        user.name.toLowerCase().includes(term) || 
+      result = result.filter(user =>
+        user.name.toLowerCase().includes(term) ||
         user.email.toLowerCase().includes(term)
       );
     }
@@ -121,9 +122,9 @@ export default function UsersPage() {
   };
 
   const toggleUserSelection = (userId: string) => {
-    setSelectedUsers(prev => 
-      prev.includes(userId) 
-        ? prev.filter(id => id !== userId) 
+    setSelectedUsers(prev =>
+      prev.includes(userId)
+        ? prev.filter(id => id !== userId)
         : [...prev, userId]
     );
   };
@@ -138,7 +139,7 @@ export default function UsersPage() {
 
   const handleUserAction = async () => {
     if (!actionUser || !actionType) return;
-    
+
     try {
       let endpoint = '';
       let method = 'POST';
@@ -168,7 +169,7 @@ export default function UsersPage() {
         },
         ...(method !== 'DELETE' && { body: JSON.stringify(body) }),
       });
-      
+
       if (response.ok) {
         // Refresh the user list
         fetchUsers();
@@ -196,12 +197,12 @@ export default function UsersPage() {
 
   const sendBulkEmail = () => {
     if (selectedUsers.length === 0) return;
-    
+
     const selectedEmails = users
       .filter(user => selectedUsers.includes(user.clerkId))
       .map(user => user.email)
       .join(',');
-    
+
     window.location.href = `mailto:${selectedEmails}`;
   };
 
@@ -329,11 +330,14 @@ export default function UsersPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         {user.image ? (
-                          <img
+                          <div className="overflow-hidden h-10 w-10 rounded-full">
+                            <Image
+                            fill
                             src={user.image}
                             alt={user.name}
-                            className="h-10 w-10 rounded-full object-cover"
+                            className=" object-cover"
                           />
+                          </div>
                         ) : (
                           <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                             <User className="h-5 w-5" />
@@ -462,7 +466,7 @@ export default function UsersPage() {
               {actionType === 'ban' ? 'Ban User' : 'Unban User'}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {actionType === 'ban' 
+              {actionType === 'ban'
                 ? `Are you sure you want to ban ${actionUser?.name}? They will not be able to access the platform.`
                 : `Are you sure you want to unban ${actionUser?.name}? They will regain access to the platform.`
               }

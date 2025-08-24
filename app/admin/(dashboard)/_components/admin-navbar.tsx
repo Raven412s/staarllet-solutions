@@ -14,7 +14,7 @@ interface AdminNavbarProps {
   onToggleSidebar: () => void;
 }
 
-export function AdminNavbar({ isSidebarCollapsed, onToggleSidebar }: AdminNavbarProps) {
+export function AdminNavbar({ onToggleSidebar }: AdminNavbarProps) {
   return (
     <header className="flex items-center justify-between p-4 border-b bg-background sticky top-0 z-30">
       {/* Left Side */}

@@ -61,7 +61,7 @@ export async function PATCH(
     }
     
     // Remove fields that shouldn't be updated via this endpoint
-    const { password, clerkId, _id, ...safeUpdateData } = updateData;
+    const {...safeUpdateData } = updateData;
     
     const user = await User.findByIdAndUpdate(
       id,
