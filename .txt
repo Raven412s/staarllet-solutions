@@ -1,0 +1,65 @@
+db.blogs.insertOne({
+  "slug": "getting-started-with",
+  "title": "Getting Started with Next.js: A Comprehensive Guide",
+  "description": "Learn how to build modern web applications with Next.js, React framework that enables server-side rendering and static site generation.",
+  "coverImg": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+  "blogId": "blog_001_nextjs_guide",
+  "content": {
+    "type": "doc",
+    "content": [
+      {
+        "type": "heading",
+        "attrs": { "level": 1 },
+        "content": [{ "type": "text", "text": "Getting Started with Next.js" }]
+      },
+      {
+        "type": "paragraph",
+        "content": [
+          { "type": "text", "text": "Next.js is a React framework that enables server-side rendering and static site generation. It's become one of the most popular tools for building modern web applications." }
+        ]
+      },
+      {
+        "type": "heading",
+        "attrs": { "level": 2 },
+        "content": [{ "type": "text", "text": "Why Choose Next.js?" }]
+      },
+      {
+        "type": "bulletList",
+        "content": [
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "Server-side rendering out of the box" }]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "Static site generation capabilities" }]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [{ "type": "text", "text": "API routes built-in" }]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "createdBy": ObjectId("68a9d1c7fe970d553dc6da92"),
+  "approved": false,
+  "published": false,
+  "createdAt": new Date("2023-10-15T10:00:00Z"),
+  "updatedAt": new Date("2023-10-16T14:30:00Z")
+})
