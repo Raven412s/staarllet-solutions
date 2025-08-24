@@ -27,7 +27,7 @@ interface IBlog {
 async function getBlogs(): Promise<IBlog[]> {
     try {
         // Use absolute URL for server-side fetching
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
         const res = await fetch(`${baseUrl}/api/blogs`, {
             next: { revalidate: 3 } // Revalidate every hour
         });
