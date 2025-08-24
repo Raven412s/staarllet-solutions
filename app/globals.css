@@ -144,7 +144,6 @@
     @apply bg-background text-foreground;
   }
 }
-<<<<<<< HEAD
 
 
 @layer base {
@@ -257,5 +256,3 @@
   border-radius: 0.25rem;
   font-size: 0.85em;
 }
-=======
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431

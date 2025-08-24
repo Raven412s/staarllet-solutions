@@ -5,20 +5,12 @@ import { connectToDb } from '@/lib/mongodb';
 
 export async function GET(
   request: NextRequest,
-<<<<<<< HEAD
   { params }: { params: Promise<{ id: string }> }
-=======
-  { params }: { params: { id: string } }
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431
 ) {
   try {
     await connectToDb();
     
-<<<<<<< HEAD
     const { id } = await params;
-=======
-    const { id } = params;
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431
     
     if (!id) {
       return NextResponse.json(
@@ -27,11 +19,7 @@ export async function GET(
       );
     }
     
-<<<<<<< HEAD
     const user = await User.find({id})
-=======
-    const user = await User.findById(id)
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431
       .select('-password')
       .populate('myBlogs', 'title')
       .populate('enrolledCourses', 'name')

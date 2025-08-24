@@ -53,10 +53,7 @@ import {
   Trash2,
   User
 } from 'lucide-react';
-<<<<<<< HEAD
 import Image from 'next/image';
-=======
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431
 import { useEffect, useState } from 'react';
 
 interface IBlog {
@@ -377,7 +374,6 @@ export default function ViewBlogs() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         {blog.coverImg ? (
-<<<<<<< HEAD
                           <div className="relative h-10 w-10 rounded-md overflow-hidden ">
                          <Image 
                             fill
@@ -386,13 +382,6 @@ export default function ViewBlogs() {
                             className="object-cover"
                           />
                           </div>
-=======
-                          <img
-                            src={blog.coverImg}
-                            alt={blog.title}
-                            className="h-10 w-10 rounded-md object-cover"
-                          />
->>>>>>> 1d8a32f0f80f75e8b0d824104a1c7abf61e5b431
                         ) : (
                           <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
                             <FileText className="h-5 w-5" />
