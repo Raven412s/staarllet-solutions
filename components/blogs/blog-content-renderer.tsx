@@ -2,6 +2,7 @@
 'use client';
 
 import { JSX } from "react";
+import Image from "next/image";
 
 interface TipTapNode {
   type: string;
@@ -19,19 +20,19 @@ interface TipTapMark {
 interface BlogContentRendererProps {
   content: string | object;
 }
+
 // Define valid heading levels
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 export function BlogContentRenderer({ content }: BlogContentRendererProps) {
-
   if (typeof content === 'string') {
-  return (
-    <div 
-      className="prose max-w-none" 
-      dangerouslySetInnerHTML={{ __html: content }} 
-    />
-  );
-}
+    return (
+      <div 
+        className="prose max-w-none" 
+        dangerouslySetInnerHTML={{ __html: content }} 
+      />
+    );
+  }
 
   const contentData = content as { type: string; content?: TipTapNode[] };
 
@@ -118,6 +119,31 @@ export function BlogContentRenderer({ content }: BlogContentRendererProps) {
             )}
           </blockquote>
         );
+      
+      case 'image': {
+        const src = node.attrs?.src as string;
+        const alt = (node.attrs?.alt as string) || '';
+        const title = (node.attrs?.title as string) || '';
+        
+        if (!src) return null;
+        
+        return (
+          <div key={index} className="my-6 flex justify-center">
+            <Image
+              src={src}
+              alt={alt}
+              title={title}
+              width={800}
+              height={400}
+              className="rounded-lg max-w-full h-auto"
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
+          </div>
+        );
+      }
       
       default:
         console.warn(`Unhandled node type: ${node.type}`);

@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import Blog from "@/models/Blog";
 import { connectToDb } from "@/lib/mongodb";
 

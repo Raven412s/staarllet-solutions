@@ -1,28 +1,25 @@
-// app/api/admin/blogs/[id]/approve/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import Blog from '@/models/Blog';
 import { getUser } from '@/lib/getUser';
 import { connectToDb } from '@/lib/mongodb';
 
-
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ blogId: string }> }
 ) {
   try {
-    const user = await getUser()
-    
-    if (!user || user.user.role !== 'admin') {
+    const user = await getUser();
+    if (!user || user.role !== 'Admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectToDb();
-    const awaitedParams = await params
+    const awaitedParams = await params;
     const { approved } = await req.json();
-    const blogId = awaitedParams.id;
+    const blogId = awaitedParams.blogId;
 
-    const blog = await Blog.findByIdAndUpdate(
-      blogId,
+    const blog = await Blog.findOneAndUpdate(
+      { blogId }, // Use blogId instead of _id
       { approved },
       { new: true }
     ).populate('createdBy', 'name email');

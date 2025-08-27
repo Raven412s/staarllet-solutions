@@ -1,5 +1,8 @@
 'use client';
 
+import EditUserModal from '@/components/modals/edit-user-modal';
+import EmailFormModal from '@/components/modals/email-modal';
+import ViewUserDetailsModal from '@/components/modals/view-user-details';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -145,6 +148,7 @@ export default function UsersPage() {
       let method = 'POST';
       let body = {};
 
+      console.log(actionUser.clerkId)
       switch (actionType) {
         case 'delete':
           endpoint = `/api/admin/users/${actionUser.clerkId}`;
@@ -190,10 +194,7 @@ export default function UsersPage() {
     }
   };
 
-  const sendEmailToUser = (user: IUser) => {
-    // This would open the user's email client with the user's email pre-filled
-    window.location.href = `mailto:${user.email}`;
-  };
+
 
   const sendBulkEmail = () => {
     if (selectedUsers.length === 0) return;
@@ -330,13 +331,13 @@ export default function UsersPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         {user.image ? (
-                          <div className="overflow-hidden h-10 w-10 rounded-full">
+                          <div className="overflow-hidden h-10 w-10 rounded-full relative">
                             <Image
-                            fill
-                            src={user.image}
-                            alt={user.name}
-                            className=" object-cover"
-                          />
+                              fill
+                              src={user.image}
+                              alt={user.name}
+                              className=" object-cover"
+                            />
                           </div>
                         ) : (
                           <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
@@ -377,19 +378,40 @@ export default function UsersPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => sendEmailToUser(user)}>
-                            <Mail className="h-4 w-4 mr-2" />
-                            Send Email
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Eye className="h-4 w-4 mr-2" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Edit className="h-4 w-4 mr-2" />
-                            Edit User
-                          </DropdownMenuItem>
+
+                          {/* Wrap the DropdownMenuItem with EmailFormModal */}
+                          <EmailFormModal
+                            to={user.email} // Pass the user's email here
+                            onSubmitted={() => {
+                              // Optional: Add any success handling
+                              console.log('Email sent successfully');
+                            }}
+                          >
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Mail className="h-4 w-4 mr-2" />
+                              Send Email
+                            </DropdownMenuItem>
+                          </EmailFormModal>
+
+                          <ViewUserDetailsModal user={user}>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Eye className="h-4 w-4 mr-2" />
+                              View Details
+                            </DropdownMenuItem>
+                          </ViewUserDetailsModal>
+
+                          <EditUserModal
+                            user={user}
+                            onSuccess={fetchUsers} // <-- This will refresh the users list after editing
+                          >
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit User
+                            </DropdownMenuItem>
+                          </EditUserModal>
+
                           <DropdownMenuSeparator />
+
                           {user.isBanned ? (
                             <DropdownMenuItem
                               onClick={() => {
@@ -413,6 +435,7 @@ export default function UsersPage() {
                               Ban User
                             </DropdownMenuItem>
                           )}
+
                           <DropdownMenuItem
                             className="text-destructive"
                             onClick={() => {
@@ -424,6 +447,7 @@ export default function UsersPage() {
                             <Trash2 className="h-4 w-4 mr-2" />
                             Delete User
                           </DropdownMenuItem>
+                          
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

@@ -1,5 +1,6 @@
 'use client';
 
+import { BlogViewModal } from '@/components/modals/view-blog-modal';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,6 +55,7 @@ import {
   User
 } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface IBlog {
@@ -85,8 +87,20 @@ export default function ViewBlogs() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [actionBlog, setActionBlog] = useState<IBlog | null>(null);
 
-  
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
+  const handleViewBlog = (blogId: string) => {
+    setSelectedBlogId(blogId);
+    setIsViewModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedBlogId(null);
+  };
+
+const router = useRouter()
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -118,8 +132,8 @@ export default function ViewBlogs() {
     // Apply search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      result = result.filter(blog => 
-        blog.title.toLowerCase().includes(term) || 
+      result = result.filter(blog =>
+        blog.title.toLowerCase().includes(term) ||
         blog.description.toLowerCase().includes(term) ||
         blog.slug.toLowerCase().includes(term)
       );
@@ -140,9 +154,9 @@ export default function ViewBlogs() {
   };
 
   const toggleBlogSelection = (blogId: string) => {
-    setSelectedBlogs(prev => 
-      prev.includes(blogId) 
-        ? prev.filter(id => id !== blogId) 
+    setSelectedBlogs(prev =>
+      prev.includes(blogId)
+        ? prev.filter(id => id !== blogId)
         : [...prev, blogId]
     );
   };
@@ -163,15 +177,15 @@ export default function ViewBlogs() {
 
       switch (action) {
         case 'approve':
-          endpoint = `/api/admin/blogs/${blog._id}/approve`;
+          endpoint = `/api/admin/blogs/${blog.blogId}/approve`; // Use blogId
           body = { approved: value };
           break;
         case 'publish':
-          endpoint = `/api/admin/blogs/${blog._id}/publish`;
+          endpoint = `/api/admin/blogs/${blog.blogId}/publish`; // Use blogId
           body = { published: value };
           break;
         case 'delete':
-          endpoint = `/api/admin/blogs/${blog._id}`;
+          endpoint = `/api/admin/blogs/${blog.blogId}`; // Use blogId
           method = 'DELETE';
           break;
       }
@@ -183,13 +197,11 @@ export default function ViewBlogs() {
         },
         ...(method !== 'DELETE' && { body: JSON.stringify(body) }),
       });
-      
+
       if (response.ok) {
-        // Refresh the blog list
         fetchBlogs();
-        // Clear selections if deleting
         if (action === 'delete') {
-          setSelectedBlogs(prev => prev.filter(id => id !== blog._id));
+          setSelectedBlogs(prev => prev.filter(id => id !== blog._id)); // Still use _id for local state
         }
       } else {
         console.error(`Failed to ${action} blog`);
@@ -202,24 +214,26 @@ export default function ViewBlogs() {
     }
   };
 
-  const handleBulkAction = async (action: 'approve' | 'publish') => {
+  const handleBulkAction = async (action: 'approve' | 'publish' | 'delete') => {
     if (selectedBlogs.length === 0) return;
-    
+
     try {
+      const selectedBlogObjects = blogs.filter(blog => selectedBlogs.includes(blog._id));
+      const blogIds = selectedBlogObjects.map(blog => blog.blogId);
+
       const response = await fetch('/api/admin/blogs/bulk-action', {
-        method: 'PATCH',
+        method: action === 'delete' ? 'DELETE' : 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          blogIds: selectedBlogs,
-          action: action,
-          value: action === 'approve' ? true : true // Set to true for approve/publish
+          blogIds,
+          action,
+          value: true
         }),
       });
-      
+
       if (response.ok) {
-        // Refresh the blog list
         fetchBlogs();
         setSelectedBlogs([]);
       } else {
@@ -229,6 +243,7 @@ export default function ViewBlogs() {
       console.error(`Error ${action} blogs in bulk:`, error);
     }
   };
+
 
   const getStatusBadgeVariant = (blog: IBlog) => {
     if (!blog.approved) return 'secondary';
@@ -243,11 +258,6 @@ export default function ViewBlogs() {
     if (blog.approved && blog.published) return 'Published';
     return 'Unknown';
   };
-
-  const viewBlog = (blog: IBlog) => {
-    window.open(`/blog/${blog.slug}`, '_blank');
-  };
-
 
 
   if (isLoading) {
@@ -269,7 +279,7 @@ export default function ViewBlogs() {
             Manage all blog posts in the system
           </p>
         </div>
-        <Button>
+        <Button onClick={()=> router.push("/admin/blogs/add")}>
           <FileText className="mr-2 h-4 w-4" />
           Create New Blog
         </Button>
@@ -316,25 +326,34 @@ export default function ViewBlogs() {
               <span className="text-sm font-medium">
                 {selectedBlogs.length} blog(s) selected
               </span>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => handleBulkAction('approve')}
               >
                 <CheckCircle className="h-4 w-4 mr-1" />
                 Approve Selected
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => handleBulkAction('publish')}
               >
                 <ExternalLink className="h-4 w-4 mr-1" />
                 Publish Selected
               </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => handleBulkAction('delete')}
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                Delete Selected
+              </Button>
             </div>
           )}
-          
+
+
           <Table>
             <TableHeader>
               <TableRow>
@@ -375,12 +394,12 @@ export default function ViewBlogs() {
                       <div className="flex items-center gap-3">
                         {blog.coverImg ? (
                           <div className="relative h-10 w-10 rounded-md overflow-hidden ">
-                         <Image 
-                            fill
-                            src={blog.coverImg}
-                            alt={blog.title}
-                            className="object-cover"
-                          />
+                            <Image
+                              fill
+                              src={blog.coverImg}
+                              alt={blog.title}
+                              className="object-cover"
+                            />
                           </div>
                         ) : (
                           <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center">
@@ -443,7 +462,7 @@ export default function ViewBlogs() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => viewBlog(blog)}>
+                            <DropdownMenuItem onClick={() => handleViewBlog(blog.blogId)}>
                               <Eye className="h-4 w-4 mr-2" />
                               View Blog
                             </DropdownMenuItem>
@@ -471,6 +490,12 @@ export default function ViewBlogs() {
               )}
             </TableBody>
           </Table>
+          {/* Modal */}
+          <BlogViewModal
+            blogId={selectedBlogId || ''}
+            isOpen={isViewModalOpen}
+            onClose={handleCloseModal}
+          />
         </CardContent>
       </Card>
 
