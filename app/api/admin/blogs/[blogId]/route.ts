@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Blog from '@/models/Blog';
 import { getUser } from '@/lib/getUser';
 import { connectToDb } from '@/lib/mongodb';
-import { IUser } from '@/models/User';
+import Blog from '@/models/Blog';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(
   req: NextRequest,

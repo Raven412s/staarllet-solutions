@@ -1,9 +1,8 @@
 import Footer from '@/components/Footer'
-import {Nav} from '@/components/Nav'
+import { Nav } from '@/components/Nav'
 import { SectionThemeProvider } from '@/context/SectionThemeContext'
 import { links } from '@/data/nav'
-import React, { PropsWithChildren, Suspense } from 'react'
-import { Toaster } from 'sonner'
+import { PropsWithChildren, Suspense } from 'react'
 
 const layout = ({ children }: PropsWithChildren) => {
     return (
@@ -13,7 +12,6 @@ const layout = ({ children }: PropsWithChildren) => {
                 {children}
             </SectionThemeProvider>
             <Footer />
-            <Toaster richColors />
         </Suspense>
     )
 }
