@@ -47,11 +47,11 @@ const menuItems = [
   //   href: '/admin/services',
   //   icon: Wrench,
   // },
-  // {
-  //   name: 'Courses',
-  //   href: '/admin/courses',
-  //   icon: BookOpen,
-  // },
+  {
+    name: 'Courses',
+    href: '/admin/courses',
+    icon: BookOpen,
+  },
   {
     name: 'Settings',
     href: '/admin/settings',

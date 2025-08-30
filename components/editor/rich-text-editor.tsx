@@ -454,7 +454,7 @@ export function RichTextEditor({ value, onChange, disabled }: RichTextEditorProp
               <Label htmlFor="image-url">Insert Image</Label>
               <ImageInput
                 value={localImageUrl}
-                onChange={setLocalImageUrl}
+                onChange={(url)=>setLocalImageUrl(url)}
               />
               <Button 
                 onClick={addImage} 

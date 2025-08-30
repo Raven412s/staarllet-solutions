@@ -113,7 +113,7 @@ export function BlogViewModal({ blogId, isOpen, onClose }: BlogViewModalProps) {
           </div>
         </DialogHeader>
 
-        <ScrollArea className="h-[70vh] px-6">
+        <ScrollArea className="h-[70vh] px-6 pointer-events-auto">
           {loading && (
             <div className="space-y-4 py-4">
               <Skeleton className="h-8 w-3/4" />
