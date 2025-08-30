@@ -1,124 +1,95 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect, useRef } from "react";
 import Masonry from "react-masonry-css";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 
- interface JobCat  {
-    label: string,
-    bg: string,
-    img: string,
-    className: string,
- }
+gsap.registerPlugin(ScrollTrigger);
 
-const jobCategories:JobCat[] = [
-  {
-    label: "Customer Success",
-    bg: "bg-[#c6f6d5]",
-    img: "/backgrounds/background-1.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Marketing & Communication",
-    bg: "bg-[#f3f4f6]",
-    img: "/backgrounds/background-2.png",
-    className: "bottom-2 left-6",
-  },
-  {
-    label: "Product Design",
-    bg: "bg-[#fefcbf]",
-    img: "/backgrounds/background-6.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Business Development",
-    bg: "bg-[#f3f4f6]",
-    img: "/backgrounds/background-3.png",
-    className: "bottom-1 right-1 font-bold",
-  },
-  {
-    label: "Full-stack Development",
-    bg: "bg-[#c6f6d5]",
-    img: "/backgrounds/background-4.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Front-end Development",
-    bg: "bg-[#f3f4f6]",
-    img: "/backgrounds/background-5.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Mobile Development",
-    bg: "bg-[#f3f4f6]",
-    img: "/backgrounds/background-7.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Data Science (AI/ML)",
-    bg: "bg-[#c6f6d5]",
-    img: "/backgrounds/background-8.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Data Science (Analytics)",
-    bg: "bg-[#c6f6d5]",
-    img: "/backgrounds/background-9.png",
-    className: "top-6 left-6",
-  },
-  {
-    label: "Data Engineering",
-    bg: "bg-[#c6f6d5]",
-    img: "/backgrounds/background-10.png",
-    className: "top-6 left-6",
-  },
+interface JobPosition {
+  label: string;
+  bg: string;
+  img: string;
+  className: string;
+}
+
+// Updated to use actual job positions from client data
+const jobPositions: JobPosition[] = [
+  { label: "Business Development Manager – PEB", bg: "bg-[#c6f6d5]", img: "/images/construction-industry.png", className: "top-6 left-6" },
+  { label: "Sales Manager", bg: "bg-[#f3f4f6]", img: "/images/sales-team.jpg", className: "bottom-2 left-6" },
+  { label: "Sales Executive", bg: "bg-[#fefcbf]", img: "/images/sales-meeting.jpg", className: "top-6 left-6" },
+  { label: "Unit Head – Cinema Industry", bg: "bg-[#f3f4f6]", img: "/images/entertainment-industry.jpg", className: "bottom-1 right-1 font-bold" },
+  { label: "Design Engineer", bg: "bg-[#c6f6d5]", img: "/images/engineering-design.jpg", className: "top-6 left-6" },
+  { label: "AWS Developer", bg: "bg-[#f3f4f6]", img: "/images/cloud-computing.jpg", className: "top-6 left-6" },
+  { label: "Full Stack Developer", bg: "bg-[#c6f6d5]", img: "/images/web-development.jpg", className: "top-6 left-6" },
+  { label: ".NET Developer", bg: "bg-[#f3f4f6]", img: "/images/software-development.avif", className: "top-6 left-6" },
+  { label: "Java Developer", bg: "bg-[#c6f6d5]", img: "/images/java-code.jpeg", className: "top-6 left-6" },
+  { label: "Production Support Engineer", bg: "bg-[#c6f6d5]", img: "/images/production-support.jpg", className: "top-6 left-6" },
+  { label: "Change Management Specialist", bg: "bg-[#f3f4f6]", img: "/images/change-management.jpg", className: "top-6 left-6" },
+  { label: "View All Positions", bg: "bg-[#e9d5ff]", img: "/images/career-growth.jpg", className: "top-6 left-6" },
 ];
 
 const breakpointColumnsObj = {
-  default: 5,
+  default: 4,
   1100: 3,
   700: 2,
   500: 1,
 };
 
-function JobCard({ cat, idx }: { cat: JobCat; idx: number }) {
-  const { scrollY } = useScroll();
-  const scale = useTransform(scrollY, [0, 1200], [1, 1.04 + idx * 0.008]);
-  const y = useTransform(scrollY, [0, 1200], [0, -10 + idx * 2]);
+function JobCard({ position, idx }: { position: JobPosition; idx: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+
+    // Only animate some cards for visual interest
+    if (idx % 3 === 0) {
+      gsap.fromTo(
+        cardRef.current,
+        { height: 220 },
+        {
+          height: 480,
+          scrollTrigger: {
+            trigger: cardRef.current,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: true,
+          },
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [idx]);
 
   return (
     <div
+      ref={cardRef}
       className={cn(
-        cat.bg,
-        "rounded-[2.5rem] p-0 flex flex-col justify-end items-start shadow-lg relative overflow-hidden mb-4"
+        position.bg,
+        "rounded-[2.5rem] p-0 flex flex-col justify-end items-start shadow-lg relative overflow-hidden mb-4 cursor-pointer transition-transform duration-300 hover:scale-105"
       )}
       style={{
-        minHeight:
-          idx % 2 === 0 ? 480 : 220, // alternate heights for variation
+        height: idx % 3 === 0 ? 480 : 220,
       }}
     >
-      <motion.div
-        className="absolute inset-0 w-full h-full z-0"
-        style={{ scale, y }}
-        transition={{ type: "spring", stiffness: 40, damping: 20 }}
-      >
-        <Image
-          fill
-          priority
-          quality={100}
-          src={cat.img}
-          alt={cat.label}
-          className="w-full h-full object-cover"
-        />
-      </motion.div>
+      <Image
+        fill
+        priority
+        quality={100}
+        src={position.img}
+        alt={position.label}
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors duration-300"></div>
       <span
         className={cn(
-          "absolute z-10 text-xl font-semibold mb-4 px-2 py-2 text-left bg-black/30 backdrop-blur-sm shadow rounded-2xl text-white",
-          cat.className
+          "absolute z-10 text-xl font-semibold mb-4 px-4 py-2 text-left bg-black/50 backdrop-blur-sm shadow rounded-2xl text-white",
+          position.className
         )}
       >
-        {cat.label}
+        {position.label}
       </span>
     </div>
   );
@@ -126,14 +97,24 @@ function JobCard({ cat, idx }: { cat: JobCat; idx: number }) {
 
 export default function JobCategoryMasonry() {
   return (
-    <Masonry
-      breakpointCols={breakpointColumnsObj}
-      className="flex w-full max-w-full mx-auto mt-8 gap-4"
-      columnClassName="masonry-column"
-    >
-      {jobCategories.map((cat, idx) => (
-        <JobCard key={cat.label + idx} cat={cat} idx={idx} />
-      ))}
-    </Masonry>
+    <div className="w-full pointer-events-auto">
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="flex w-full max-w-full mx-auto mt-8 gap-4"
+        columnClassName="masonry-column"
+      >
+        {jobPositions.map((position, idx) => (
+          <JobCard key={position.label + idx} position={position} idx={idx} />
+        ))}
+      </Masonry>
+      <div className="text-center mt-12">
+        <button className="px-8 py-3 rounded-lg bg-green-200 text-[#101c16] font-semibold shadow hover:bg-green-300/80 transition">
+          Join Our Talent Network
+        </button>
+        <p className="text-white/60 mt-4 text-sm">
+          We&apos;re hiring across industries and experience levels!
+        </p>
+      </div>
+    </div>
   );
 }

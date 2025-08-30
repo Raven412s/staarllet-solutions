@@ -42,16 +42,16 @@ const menuItems = [
     href: '/admin/blogs',
     icon: FileText,
   },
-  {
-    name: 'Services',
-    href: '/admin/services',
-    icon: Wrench,
-  },
-  {
-    name: 'Courses',
-    href: '/admin/courses',
-    icon: BookOpen,
-  },
+  // {
+  //   name: 'Services',
+  //   href: '/admin/services',
+  //   icon: Wrench,
+  // },
+  // {
+  //   name: 'Courses',
+  //   href: '/admin/courses',
+  //   icon: BookOpen,
+  // },
   {
     name: 'Settings',
     href: '/admin/settings',

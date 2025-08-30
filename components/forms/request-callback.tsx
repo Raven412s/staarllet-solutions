@@ -21,6 +21,7 @@ import PhoneInput from "react-phone-input-2";
 const RequestCallbackSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  type: z.string(),
   phone: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
@@ -46,6 +47,7 @@ export default function RequestCallbackForm({
       name: "",
       email: "",
       phone: "",
+      type: "",
       message: "",
     },
   });
@@ -56,7 +58,7 @@ export default function RequestCallbackForm({
       const res = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({...values, type: "forCallback"}),
       });
 
       if (res.ok) {

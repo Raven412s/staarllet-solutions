@@ -7,7 +7,7 @@ export const links: LinkItem[] = [
     { label: "Services.", href: "/services" },
     { label: "About.", href: "/about" },
     { label: "Courses.", href: "/courses" },
-    { label: "Partners.", href: "/partners" }
+    // { label: "Partners.", href: "/partners" }
 ];
 
 export const tags: TagItem[] = [

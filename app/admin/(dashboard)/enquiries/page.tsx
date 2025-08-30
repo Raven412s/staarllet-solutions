@@ -54,6 +54,7 @@ interface Enquiry {
   _id: string;
   name: string;
   email: string;
+  type: string;
   phone: string;
   message?: string;
   createdAt: string;
@@ -307,6 +308,7 @@ export default function EnquiriesPage() {
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Phone</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Message</TableHead>
                 <TableHead>Submitted</TableHead>
                 <TableHead>Status</TableHead>
@@ -333,6 +335,7 @@ export default function EnquiriesPage() {
                     <TableCell className="font-medium">{enquiry.name}</TableCell>
                     <TableCell>{enquiry.email}</TableCell>
                     <TableCell>{enquiry.phone}</TableCell>
+                    <TableCell>{enquiry.type}</TableCell>
                     <TableCell className="max-w-xs truncate">
                       {enquiry.message || "-"}
                     </TableCell>
