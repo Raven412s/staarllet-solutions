@@ -8,10 +8,6 @@ import {
     SignedOut,
     UserButton
 } from '@clerk/nextjs';
-import gsap from "gsap";
-import { CustomEase } from 'gsap/CustomEase';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 import Image from "next/image";
 import Link from "next/link";
 import React from 'react';
@@ -19,10 +15,11 @@ import { FiMenu, FiSearch } from 'react-icons/fi';
 import { MdCall } from "react-icons/md";
 import RequestCallbackModal from "./modals/request-a-callback";
 import { Button } from "./ui/button";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DialogTitle } from "./ui/dialog";
 import { useCurrentUser } from "@/lib/useUser";
 
-gsap.registerPlugin(SplitText, CustomEase, ScrollTrigger);
+
 
 export interface LinkItem {
     label: string;
@@ -40,93 +37,114 @@ interface NavProps {
 export const Nav = ({ links }: NavProps) => {
     const navRef = React.useRef<HTMLDivElement>(null);
     const [scrolled, setScrolled] = React.useState(false);
-    const user = useCurrentUser()
+    const { user } = useCurrentUser()
 
 
     React.useEffect(() => {
-  if (!navRef.current) return;
-  const nav = navRef.current;
-  let last = false;
+        if (!navRef.current) return;
+        const nav = navRef.current;
+        let last = false;
+        let ctx: gsap.Context | null = null;
 
-  const ctx = gsap.context(() => {
-    gsap.set(nav, {
-      background: "transparent",
-      boxShadow: "none",
-      y: 0,
-      width: "100%",
-      left: 0,
-      top: 0,
-      borderRadius: "0rem",
-      backdropFilter: "none",
-      x: 0,
-    });
+        (async () => {
+            // ✅ Lazy-load GSAP only when Nav mounts
+            const gsapModule = await import("gsap");
+            const { ScrollTrigger } = await import("gsap/ScrollTrigger");
 
-    // ✅ GSAP media query
-    ScrollTrigger.matchMedia({
-      // Desktop only (md: 768px+)
-      "(min-width: 768px)": () => {
-        ScrollTrigger.create({
-          trigger: document.body,
-          start: 0,
-          onUpdate: (self) => {
-            const isScrolled = self.scroll() > 10;
-            if (isScrolled !== last) {
-              setScrolled(isScrolled);
-              last = isScrolled;
+            const gsap = gsapModule.gsap;
+            gsap.registerPlugin(ScrollTrigger);
+
+            ctx = gsap.context(() => {
+                gsap.set(nav, {
+                    background: "transparent",
+                    boxShadow: "none",
+                    y: 0,
+                    width: "100%",
+                    left: 0,
+                    top: 0,
+                    borderRadius: "0rem",
+                    backdropFilter: "none",
+                    x: 0,
+                });
+
+                // ✅ Media query animation setup
+                ScrollTrigger.matchMedia({
+                    "(min-width: 768px)": () => {
+                        ScrollTrigger.create({
+                            trigger: document.body,
+                            start: 0,
+                            onUpdate: (self) => {
+                                const isScrolled = self.scroll() > 10;
+                                if (isScrolled !== last) {
+                                    setScrolled(isScrolled);
+                                    last = isScrolled;
+                                }
+                                gsap.to(nav, {
+                                    duration: 0.85,
+                                    ease: "cubic-bezier(0.77,0,0.18,1)",
+                                    background: isScrolled
+                                        ? "rgba(255,255,255,0.7)"
+                                        : "transparent",
+                                    boxShadow: isScrolled
+                                        ? "0 4px 24px rgba(0,0,0,0.08)"
+                                        : "none",
+                                    y: isScrolled ? 16 : 0,
+                                    width: isScrolled ? "90%" : "100%",
+                                    left: isScrolled ? "50%" : 0,
+                                    x: isScrolled ? "-50%" : 0,
+                                    top: isScrolled ? 16 : 0,
+                                    borderRadius: isScrolled ? "1.5rem" : "0rem",
+                                    backdropFilter: isScrolled
+                                        ? "blur(12px) saturate(1.5)"
+                                        : "none",
+                                });
+                            },
+                        });
+                    },
+
+                    "(max-width: 767px)": () => {
+                        ScrollTrigger.create({
+                            trigger: document.body,
+                            start: 0,
+                            onUpdate: (self) => {
+                                const isScrolled = self.scroll() > 10;
+                                if (isScrolled !== last) {
+                                    setScrolled(isScrolled);
+                                    last = isScrolled;
+                                }
+                                gsap.to(nav, {
+                                    duration: 0.3,
+                                    ease: "power2.out",
+                                    background: isScrolled
+                                        ? "rgba(255,255,255,0.9)"
+                                        : "transparent",
+                                    boxShadow: isScrolled
+                                        ? "0 2px 12px rgba(0,0,0,0.08)"
+                                        : "none",
+                                    y: 0,
+                                    width: "100%",
+                                    left: 0,
+                                    x: 0,
+                                    top: 0,
+                                    borderRadius: "0rem",
+                                    backdropFilter: "none",
+                                });
+                            },
+                        });
+                    },
+                });
+            }, nav);
+        })();
+
+
+        return () => {
+            if (ctx) ctx.revert();
+            if (typeof window !== "undefined") {
+                ScrollTrigger.getAll().forEach((t: gsap.plugins.ScrollTrigger) => t.kill());
             }
-            gsap.to(nav, {
-              duration: 0.85,
-              ease: "cubic-bezier(0.77,0,0.18,1)",
-              background: isScrolled ? "rgba(255,255,255,0.7)" : "transparent",
-              boxShadow: isScrolled ? "0 4px 24px rgba(0,0,0,0.08)" : "none",
-              y: isScrolled ? 16 : 0,
-              width: isScrolled ? "90%" : "100%",
-              left: isScrolled ? "50%" : 0,
-              x: isScrolled ? "-50%" : 0,
-              top: isScrolled ? 16 : 0,
-              borderRadius: isScrolled ? "1.5rem" : "0rem",
-              backdropFilter: isScrolled ? "blur(12px) saturate(1.5)" : "none",
-            });
-          },
-        });
-      },
+        };
+    }, []);
 
-      // Mobile only (disable floating effect)
-      "(max-width: 767px)": () => {
-        ScrollTrigger.create({
-          trigger: document.body,
-          start: 0,
-          onUpdate: (self) => {
-            const isScrolled = self.scroll() > 10;
-            if (isScrolled !== last) {
-              setScrolled(isScrolled);
-              last = isScrolled;
-            }
-            // ✅ Mobile: simple sticky nav
-            gsap.to(nav, {
-              duration: 0.3,
-              ease: "power2.out",
-              background: isScrolled ? "rgba(255,255,255,0.9)" : "transparent",
-              boxShadow: isScrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
-              y: 0,
-              width: "100%",
-              left: 0,
-              x: 0,
-              top: 0,
-              borderRadius: "0rem",
-              backdropFilter: "none",
-            });
-          },
-        });
-      },
-    });
-  }, nav);
-
-  return () => {
-    ctx.revert();
-    ScrollTrigger.getAll().forEach((t) => t.kill());
-  };
-}, []);
 
 
 
@@ -160,7 +178,7 @@ export const Nav = ({ links }: NavProps) => {
                             </Link>
                         ))}
                         {
-                            user && user.user?.role === 'Admin' && (
+                            user && user?.role === 'Admin' && (
                                 <Link
                                     href={"/admin"}
                                     className={`text-base font-medium transition-colors px-2 py-1 rounded-lg ${scrolled ? 'text-gray-900 mix-blend-difference' : 'text-gray-900'} hover:text-violet-600`}
@@ -171,7 +189,7 @@ export const Nav = ({ links }: NavProps) => {
                             )
                         }
                         {
-                            user && user.user?.role === 'Public' && (
+                            user && user?.role === 'Public' && (
                                 <Link
                                     href={"/account"}
                                     className={`text-base font-medium transition-colors px-2 py-1 rounded-lg ${scrolled ? 'text-gray-900 mix-blend-difference' : 'text-gray-900'} hover:text-violet-600`}
@@ -205,7 +223,7 @@ export const Nav = ({ links }: NavProps) => {
                         <UserButton />
                     </SignedIn>
                     {
-                        user.user?.role !== "Admin" && (
+                        user?.role !== "Admin" && (
                             <>
                                 <RequestCallbackModal>
                                     {scrolled ? (

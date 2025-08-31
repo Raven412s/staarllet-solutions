@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import Masonry from "react-masonry-css";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
+import Masonry from "react-masonry-css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,18 +18,18 @@ interface JobPosition {
 
 // Updated to use actual job positions from client data
 const jobPositions: JobPosition[] = [
-  { label: "Business Development Manager – PEB", bg: "bg-[#c6f6d5]", img: "/images/construction-industry.png", className: "top-6 left-6" },
-  { label: "Sales Manager", bg: "bg-[#f3f4f6]", img: "/images/sales-team.jpg", className: "bottom-2 left-6" },
-  { label: "Sales Executive", bg: "bg-[#fefcbf]", img: "/images/sales-meeting.jpg", className: "top-6 left-6" },
-  { label: "Unit Head – Cinema Industry", bg: "bg-[#f3f4f6]", img: "/images/entertainment-industry.jpg", className: "bottom-1 right-1 font-bold" },
-  { label: "Design Engineer", bg: "bg-[#c6f6d5]", img: "/images/engineering-design.jpg", className: "top-6 left-6" },
-  { label: "AWS Developer", bg: "bg-[#f3f4f6]", img: "/images/cloud-computing.jpg", className: "top-6 left-6" },
-  { label: "Full Stack Developer", bg: "bg-[#c6f6d5]", img: "/images/web-development.jpg", className: "top-6 left-6" },
-  { label: ".NET Developer", bg: "bg-[#f3f4f6]", img: "/images/software-development.avif", className: "top-6 left-6" },
-  { label: "Java Developer", bg: "bg-[#c6f6d5]", img: "/images/java-code.jpeg", className: "top-6 left-6" },
-  { label: "Production Support Engineer", bg: "bg-[#c6f6d5]", img: "/images/production-support.jpg", className: "top-6 left-6" },
-  { label: "Change Management Specialist", bg: "bg-[#f3f4f6]", img: "/images/change-management.jpg", className: "top-6 left-6" },
-  { label: "View All Positions", bg: "bg-[#e9d5ff]", img: "/images/career-growth.jpg", className: "top-6 left-6" },
+  { label: "Business Development Manager – PEB", bg: "bg-[#c6f6d5]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669253/construction-industry_fuycn9.png", className: "top-6 left-6" },
+  { label: "Sales Manager", bg: "bg-[#f3f4f6]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669254/sales-team_k7paft.jpg", className: "bottom-2 left-6" },
+  { label: "Sales Executive", bg: "bg-[#fefcbf]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669254/sales-meeting_ynyeur.jpg", className: "top-6 left-6" },
+  { label: "Unit Head – Cinema Industry", bg: "bg-[#f3f4f6]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669252/entertainment-industry_jprsgg.jpg", className: "bottom-1 right-1 font-bold" },
+  { label: "Design Engineer", bg: "bg-[#c6f6d5]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669252/engineering-design_peggi4.jpg", className: "top-6 left-6" },
+  { label: "AWS Developer", bg: "bg-[#f3f4f6]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669254/cloud-computing_fxeuap.jpg", className: "top-6 left-6" },
+  { label: "Full Stack Developer", bg: "bg-[#c6f6d5]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669255/web-development_qpnphz.jpg", className: "top-6 left-6" },
+  { label: ".NET Developer", bg: "bg-[#f3f4f6]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669254/software-development_slbzir.avif", className: "top-6 left-6" },
+  { label: "Java Developer", bg: "bg-[#c6f6d5]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669253/java-code_gxcv7k.jpg", className: "top-6 left-6" },
+  { label: "Production Support Engineer", bg: "bg-[#c6f6d5]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669253/production-support_lkvtpt.jpg", className: "top-6 left-6" },
+  { label: "Change Management Specialist", bg: "bg-[#f3f4f6]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669251/change-management_qzkpdz.jpg", className: "top-6 left-6" },
+  { label: "View All Positions", bg: "bg-[#e9d5ff]", img: "https://res.cloudinary.com/drqps1hj4/image/upload/v1756669250/career-growth_e7tz04.jpg", className: "top-6 left-6" },
 ];
 
 const breakpointColumnsObj = {
@@ -76,7 +77,6 @@ function JobCard({ position, idx }: { position: JobPosition; idx: number }) {
     >
       <Image
         fill
-        priority
         quality={100}
         src={position.img}
         alt={position.label}
@@ -95,7 +95,7 @@ function JobCard({ position, idx }: { position: JobPosition; idx: number }) {
   );
 }
 
-export default function JobCategoryMasonry() {
+export default function JobCategoryMasonry({user}:{user?: boolean}) {
   return (
     <div className="w-full pointer-events-auto">
       <Masonry
@@ -107,14 +107,16 @@ export default function JobCategoryMasonry() {
           <JobCard key={position.label + idx} position={position} idx={idx} />
         ))}
       </Masonry>
+      {!user &&
       <div className="text-center mt-12">
-        <button className="px-8 py-3 rounded-lg bg-green-200 text-[#101c16] font-semibold shadow hover:bg-green-300/80 transition">
+        <Link href={"/login/create"} className="px-8 py-3 rounded-lg bg-green-200 text-[#101c16] font-semibold shadow hover:bg-green-300/80 transition">
           Join Our Talent Network
-        </button>
+        </Link>
         <p className="text-white/60 mt-4 text-sm">
           We&apos;re hiring across industries and experience levels!
         </p>
       </div>
+      }
     </div>
   );
 }

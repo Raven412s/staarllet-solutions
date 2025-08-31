@@ -1,38 +1,32 @@
-import { Badge } from "@/components/ui/badge";
+// app/courses/page.tsx
+import Link from "next/link";
+import Image from "next/image";
+import { Suspense } from "react";
+import { Clock, IndianRupee, Star } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import SectionWrapper from "@/components/wrapper/SectionWrapper";
+import { Badge } from "@/components/ui/badge";
+import CoursesSkeleton from "@/components/skeletons/CoursesSkeleton";
 import { fetchCourses } from "@/data/courses";
 import { ICourse, Review } from "@/models/Course";
-import { Clock, IndianRupee, Star } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import SectionWrapper from "@/components/wrapper/SectionWrapper";
 
+async function getCourses(): Promise<ICourse[]> {
+    try {
+        // Simulate network delay (optional)
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
-const CoursesPage = async () => {
-    const courses = await fetchCourses();
-
-    if (!courses || courses.length === 0) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100">
-                <div className="text-center">
-                    <h1 className="text-4xl font-bold mb-4">🚀 No Courses Available</h1>
-                    <p className="text-muted-foreground text-lg">
-                        Check back later for new courses!
-                    </p>
-                </div>
-            </div>
-        );
+        const courses = await fetchCourses();
+        return courses || [];
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+        return [];
     }
+}
 
+export default function CoursesPage() {
     return (
+
         <SectionWrapper
             navbarSpacing="loose"
             padding="sm"
@@ -40,69 +34,73 @@ const CoursesPage = async () => {
             maxWidth="full"
             className="flex items-center justify-center h-full w-full gap-2 flex-col pointer-events-auto"
         >
-            <div className="min-h-screen ">
-                {/* Hero Section */}
-                <div className="text-center mb-16">
-                    <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
-                        Our <span className="text-primary">Courses</span>
-                    </h1>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-                        Discover a wide range of courses designed to help you master new
-                        skills and advance your career.
-                    </p>
-                    <Button size="lg" className="rounded-full shadow-lg hover:scale-105 transition-transform">
-                        Browse Courses
-                    </Button>
-                </div>
-
-                {/* Course Grid */}
-                <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {courses.map((course: ICourse, index: number) => (
-                            <div
-                                key={index}
-                            >
-                                <CourseCard course={course} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            {/* Hero Section */}
+            <div className="text-center mb-12">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+                    Our <span className="text-primary">Courses</span>
+                </h1>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+                    Discover a wide range of courses designed to help you master new
+                    skills and advance your career.
+                </p>
+                <Button size="lg" className="rounded-full shadow-lg hover:scale-105 transition-transform">
+                    Browse Courses
+                </Button>
             </div>
+
+            {/* Courses Grid */}
+            <Suspense fallback={<CoursesSkeleton />}>
+                <PublishedCourses />
+            </Suspense>
+
         </SectionWrapper>
+    );
+}
+
+const PublishedCourses = async () => {
+    const courses = await getCourses();
+
+    if (courses.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <h2 className="text-2xl font-semibold mb-4">🚀 No Courses Available</h2>
+                <p className="text-muted-foreground">Check back later for new courses!</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {courses.map((course) => (
+                <CourseCard key={course._id.toString()} course={course} />
+            ))}
+        </div>
     );
 };
 
 const CourseCard = ({ course }: { course: ICourse }) => {
-    const calculateDiscount = () => {
-        if (!course.discountedPrice || course.discountedPrice >= course.price)
-            return 0;
-        return Math.round(
-            ((course.price - course.discountedPrice) / course.price) * 100
-        );
-    };
+    const discount =
+        course.discountedPrice && course.discountedPrice < course.price
+            ? Math.round(((course.price - course.discountedPrice) / course.price) * 100)
+            : 0;
 
-    const discountPercentage = calculateDiscount();
-    const averageRating = course.reviews?.length
-        ? course.reviews.reduce(
-            (sum: number, review: Review) => sum + review.rating,
-            0
-        ) / course.reviews.length
+    const avgRating = course.reviews?.length
+        ? course.reviews.reduce((sum: number, r: Review) => sum + r.rating, 0) / course.reviews.length
         : 0;
 
     return (
-        <Card className="h-full flex flex-col overflow-hidden rounded-2xl border shadow-md hover:shadow-xl transition-all duration-300">
+        <Card className="overflow-hidden group relative min-h-[38rem] hover:shadow-lg transition-all pt-0 duration-300 flex flex-col h-full rounded-2xl">
             {/* Thumbnail */}
-            <div className="relative w-full h-52 ">
+            <div className="relative h-2/3 w-full overflow-hidden">
                 <Image
-                    fill
-                    priority
                     src={course.thumbnail}
                     alt={course.title}
-                    className="object-cover"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                {discountPercentage > 0 && (
+                {discount > 0 && (
                     <Badge className="absolute top-3 right-3 bg-gradient-to-r from-red-500 to-pink-600 text-white">
-                        Save {discountPercentage}%
+                        Save {discount}%
                     </Badge>
                 )}
                 <Badge className="absolute top-3 left-3 bg-gradient-to-r from-indigo-500 to-blue-600 text-white">
@@ -115,35 +113,27 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                 <CardTitle className="text-xl font-semibold line-clamp-2">
                     {course.title}
                 </CardTitle>
-                <CardDescription className="line-clamp-2">
-                    {course.subtitle}
-                </CardDescription>
+                <CardDescription className="line-clamp-2">{course.subtitle}</CardDescription>
             </CardHeader>
 
             {/* Card Content */}
             <CardContent className="flex-grow pb-4">
                 {/* Ratings & Duration */}
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-3 text-sm text-muted-foreground">
                     <div className="flex items-center">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                        <span className="text-sm font-medium">
-                            {averageRating.toFixed(1)}
-                        </span>
-                        <span className="text-xs text-gray-500 ml-1">
-                            ({course.reviews?.length || 0})
-                        </span>
+                        <span>{avgRating.toFixed(1)}</span>
+                        <span className="ml-1">({course.reviews?.length || 0})</span>
                     </div>
-                    <div className="flex items-center text-gray-600">
+                    <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{course.duration}</span>
+                        <span>{course.duration}</span>
                     </div>
                 </div>
 
                 {/* Instructor & Category */}
                 <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-gray-800">
-                        {course.instructor}
-                    </span>
+                    <span className="text-sm font-medium">{course.instructor}</span>
                     <Badge variant="outline" className="rounded-full px-3">
                         {course.category}
                     </Badge>
@@ -152,9 +142,9 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                 {/* Requirements */}
                 <div>
                     <h4 className="text-sm font-semibold mb-1">Requirements:</h4>
-                    <ul className="text-xs text-gray-600 space-y-1">
-                        {course.requirements.slice(0, 3).map((req, index) => (
-                            <li key={index} className="flex items-start">
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                        {course.requirements.slice(0, 3).map((req, i) => (
+                            <li key={i} className="flex items-start">
                                 <span className="mr-2">•</span>
                                 <span className="line-clamp-2">{req}</span>
                             </li>
@@ -171,8 +161,7 @@ const CourseCard = ({ course }: { course: ICourse }) => {
             {/* Card Footer */}
             <CardFooter className="pt-3 border-t flex justify-between items-center">
                 <div>
-                    {course.discountedPrice &&
-                        course.discountedPrice < course.price ? (
+                    {course.discountedPrice && course.discountedPrice < course.price ? (
                         <div className="flex items-center">
                             <span className="text-2xl font-bold text-primary">
                                 <IndianRupee className="inline h-5 w-5" />
@@ -190,15 +179,16 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                         </span>
                     )}
                 </div>
-                <Link href={`/courses/${course._id}`} className={`${buttonVariants({variant: "outline"})}, text-green-800`}>
-                    View Details
-                </Link >
-                <Button className={buttonVariants()}>
-                    Enroll Now
-                </Button>
+                <div className="flex gap-2">
+                    <Link
+                        href={`/courses/${course._id}`}
+                        className={buttonVariants({ variant: "outline" })}
+                    >
+                        View Details
+                    </Link>
+                    <Button>Enroll Now</Button>
+                </div>
             </CardFooter>
         </Card>
     );
 };
-
-export default CoursesPage;

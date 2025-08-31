@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { Calendar, User, ArrowRight, FileText } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
+import BlogCardsSkeleton from '@/components/skeletons/BlogCardsSkeleton';
 
 interface IBlog {
     _id: string;
@@ -26,6 +28,7 @@ interface IBlog {
 
 async function getBlogs(): Promise<IBlog[]> {
     try {
+        await new Promise((resolve) => setTimeout(resolve, 2500));
         // Use absolute URL for server-side fetching
         const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
         const res = await fetch(`${baseUrl}/api/blogs`, {
@@ -43,9 +46,8 @@ async function getBlogs(): Promise<IBlog[]> {
     }
 }
 
-export default async function BlogsPage() {
-    const blogs = await getBlogs();
-    const publishedBlogs = blogs.filter(blog => blog.approved && blog.published);
+export default  function BlogsPage() {
+    
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -56,7 +58,19 @@ export default async function BlogsPage() {
                 </p>
             </div>
 
-            {publishedBlogs.length === 0 ? (
+            <Suspense fallback={<BlogCardsSkeleton/>}>
+                <PublishedBlogs/>
+            </Suspense>
+        </div>
+    );
+}
+
+const PublishedBlogs = async () => {
+    const blogs = await getBlogs();
+    const publishedBlogs = blogs.filter(blog => blog.approved && blog.published);
+    return (
+        <>
+                 {publishedBlogs.length === 0 ? (
                 <div className="text-center py-12">
                     <h2 className="text-2xl font-semibold mb-4">No blog posts yet</h2>
                     <p className="text-muted-foreground">Check back later for new content.</p>
@@ -106,6 +120,6 @@ export default async function BlogsPage() {
                     ))}
                 </div>
             )}
-        </div>
-    );
+        </>
+    )
 }

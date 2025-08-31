@@ -71,7 +71,7 @@ export async function POST(req: Request) {
     const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
-          folder: 'restaurant-website',
+          folder: 'recruitment-website',
           resource_type: 'image',
           transformation: [
             { quality: 'auto:good' },

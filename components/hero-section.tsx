@@ -3,8 +3,10 @@ import JobCategoryMasonry from './JobCategoryMasonry'
 import { ScrollMarquee } from './scroll-marquee'
 import Copy from './text-reveal/Copy'
 import SectionWrapper from './wrapper/SectionWrapper'
+import { getUser } from '@/lib/getUser'
 
-const HeroSection = () => {
+const HeroSection = async () => {
+    const user = await getUser()
     return (
         <SectionWrapper
             navbarSpacing="loose"
@@ -80,7 +82,7 @@ const HeroSection = () => {
                             </h1>
                         </Copy>
                     </div>
-                    <JobCategoryMasonry />
+                    <JobCategoryMasonry user={user ? true : false} />
                 </div>
             </section>
         </SectionWrapper>

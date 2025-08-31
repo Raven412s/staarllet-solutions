@@ -1,18 +1,21 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface Lesson {
+export interface Lesson {
   title: string;
   content: string;
   duration: number;
   videoUrl?: string; // Added to match form
 }
 
-interface Module {
+export interface Module {
+  _id: string;
+  description: string
   title: string;
   lessons: Lesson[];
 }
 
-interface FAQ {
+export interface FAQ {
+  _id: string
   question: string;
   answer: string;
 }
@@ -25,6 +28,7 @@ export interface Review {
 }
 
 export interface ICourse extends Document {
+  _id: mongoose.Types.ObjectId;
   title: string;
   subtitle?: string;
   description: string;
@@ -34,10 +38,13 @@ export interface ICourse extends Document {
   discountedPrice?: number;
   currency: string;
   instructor: string;
+  whatYouWillLearn: string[]
   level: "beginner" | "intermediate" | "advanced";
   duration: string;
   language: string;
   category: string;
+  status: string;
+  rating: number;
   requirements: string[]; // Changed from object array to string array
   syllabus: Module[];
   faqs: FAQ[];
