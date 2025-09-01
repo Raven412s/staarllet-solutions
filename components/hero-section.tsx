@@ -18,10 +18,10 @@ const HeroSection = async () => {
             {/* Hero Section */}
             <section id="hero" className="w-full min-h-screen flex flex-col items-center justify-center pt-20  bg-[#101c16] rounded-[1.2rem] rounded-b-none">
                 <div className="max-w-6xl mx-auto text-center mb-12 px-4">
-                    <Copy>
                         <h1 className="text-4xl md:text-7xl font-bold text-green-50 mb-6 md:leading-[1.39]">
                             Empowering Talent, <br />Elevating Businesses
                         </h1>
+                    <Copy>
                         <p className="text-lg md:text-2xl text-white/60 mb-8">
                             Your trusted partner in IT & Non-IT Recruitment, Training & HR Solutions
                         </p>

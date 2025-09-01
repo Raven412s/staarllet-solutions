@@ -367,10 +367,10 @@ export async function POST(req: Request) {
     await connectToDb();
 
     const body = await req.json();
-    const { name, email, phone, message, type } = body;
+    const { name, email, phone, message, type, course } = body;
 
     // 1️⃣ Save enquiry in DB
-    const enquiry = await Enquiry.create({ name, email, phone, message, type });
+    const enquiry = await Enquiry.create({ name, email, phone, message, type, course });
 
     // 2️⃣ Respond immediately (so user doesn't wait for email)
     const response = NextResponse.json({ success: true, enquiry });

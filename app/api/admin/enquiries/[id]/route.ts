@@ -1,3 +1,4 @@
+// app/api/admin/enquiries/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import Enquiry from "@/models/Enquiry";
 import { connectToDb } from "@/lib/mongodb";

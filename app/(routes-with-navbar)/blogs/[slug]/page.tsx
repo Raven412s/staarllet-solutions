@@ -27,7 +27,7 @@ interface IBlog {
 
 async function getBlog(slug: string): Promise<IBlog | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const baseUrl = process.env.NEXTAUTH_URL;
     if (!baseUrl) throw new Error("Base URL is not defined");
 
     const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {

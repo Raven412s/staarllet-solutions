@@ -1,4 +1,5 @@
 // app/courses/[id]/page.tsx
+import GetAQuoteModal from "@/components/modals/get-a-quote";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -72,7 +73,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{id
             </p>
             <div className="mt-6 flex gap-3">
               <Button>Enroll Now</Button>
-              <Button variant="outline">Get a Quote</Button>
+              <GetAQuoteModal course={course._id.toString()}><Button variant="outline">Get a Quote</Button></GetAQuoteModal>
             </div>
           </div>
         </div>

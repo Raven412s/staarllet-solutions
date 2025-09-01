@@ -1,7 +1,6 @@
-"use client"
+
 
 import { cn } from '@/lib/utils'
-import { usePathname, useSearchParams } from 'next/navigation'
 import React, { PropsWithChildren, useEffect } from 'react'
 
 type SectionWrapperProps = PropsWithChildren & {
@@ -20,8 +19,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
     background = 'default',
     navbarSpacing = 'default'
 }) => {
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
+
 
     // Enhanced padding system with consistent navbar spacing
     const getPaddingClasses = () => {
@@ -68,22 +66,6 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
         transparent: 'bg-transparent'
     }
 
-    // Smooth scroll to top on route change with animation
-    useEffect(() => {
-        const scrollToTop = () => {
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            })
-        }
-
-        // Small delay to ensure route change is complete
-        const timeoutId = setTimeout(scrollToTop, 100)
-
-        return () => clearTimeout(timeoutId)
-    }, [pathname, searchParams])
-
     return (
         <main className={cn(
             'w-full text-foreground pointer-events-none',
@@ -102,28 +84,6 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
                     {children}
                 </div>
             </div>
-            {/* Optional scroll indicator */}
-            {/* <div className="fixed bottom-4 right-4 z-40 opacity-0 pointer-events-none transition-opacity duration-300 hover:opacity-100">
-                <button
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 rounded-full p-2 transition-colors duration-200"
-                    aria-label="Scroll to top"
-                >
-                    <svg
-                        className="w-4 h-4 text-primary"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 10l7-7m0 0l7 7m-7-7v18"
-                        />
-                    </svg>
-                </button>
-            </div> */}
         </main>
     )
 }

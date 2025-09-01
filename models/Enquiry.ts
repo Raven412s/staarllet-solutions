@@ -7,8 +7,9 @@ export interface IEnquiry extends Document {
   phone: string;
   message?: string;
   type: "forCallback" | "forCourses" | "forMock" | "forResumeReview" | "other";
-  resume?: string; // optional, src/path to resume PDF
-  called?: boolean; // for callback follow-up
+  course?: mongoose.Types.ObjectId; // <-- added for "forCourses"
+  resume?: string;
+  called?: boolean;
   createdAt: Date;
 }
 
@@ -24,7 +25,11 @@ const EnquirySchema: Schema = new Schema(
       enum: ["forCallback", "forCourses", "forMock", "forResumeReview", "other"],
       required: true,
     },
-    resume: { type: String }, // URL or file path
+    course: {
+      type: Schema.Types.ObjectId,
+      ref: "Course", // <-- reference to Course model
+    },
+    resume: { type: String },
     called: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
   },

@@ -3,16 +3,16 @@
 "use client";
 import EnquiryForm from "@/components/forms/enquiry-form";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
 } from "@/components/ui/dialog";
 import * as React from "react";
 
-export type RequestCallbackModalProps = {
+export type GetAQuoteModalProps = {
   /**
    * Any element that should open the modal when clicked.
    * Commonly a <Button> from shadcn, a link, or a custom node.
@@ -38,9 +38,11 @@ export type RequestCallbackModalProps = {
    * Extra class names for DialogContent
    */
   contentClassName?: string;
+
+  course: string,
 };
 
-export default function RequestCallbackModal({
+export default function GetAQuoteModal({
   children,
   title = "Request a Callback",
   description = "Fill the form and our team will reach out shortly.",
@@ -48,7 +50,8 @@ export default function RequestCallbackModal({
   open,
   onOpenChange,
   contentClassName,
-}: RequestCallbackModalProps) {
+  course,
+}: GetAQuoteModalProps) {
   const [internalOpen, setInternalOpen] = React.useState(false);
   const isControlled = typeof open === "boolean";
   const modalOpen = isControlled ? (open as boolean) : internalOpen;
@@ -83,7 +86,7 @@ export default function RequestCallbackModal({
             update the prop name below accordingly.
           */}
           <div className="mt-4">
-            <EnquiryForm onSuccess={handleSuccess} type="forCallback" />
+            <EnquiryForm onSuccess={handleSuccess} type="forCourses" course={course} />
           </div>
         </div>
       </DialogContent>

@@ -18,6 +18,8 @@ import { Button } from "./ui/button";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DialogTitle } from "./ui/dialog";
 import { useCurrentUser } from "@/lib/useUser";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 
 
@@ -37,8 +39,8 @@ interface NavProps {
 export const Nav = ({ links }: NavProps) => {
     const navRef = React.useRef<HTMLDivElement>(null);
     const [scrolled, setScrolled] = React.useState(false);
-    const { user } = useCurrentUser()
-
+    const { user, loading } = useCurrentUser()
+    const pathname = usePathname()
 
     React.useEffect(() => {
         if (!navRef.current) return;
@@ -171,8 +173,12 @@ export const Nav = ({ links }: NavProps) => {
                             <Link
                                 href={link.href}
                                 key={index}
-                                className={`text-base font-medium transition-colors px-2 py-1 rounded-lg ${scrolled ? 'text-gray-900 mix-blend-difference' : 'text-gray-900'} hover:text-violet-600`}
-                                style={scrolled ? { mixBlendMode: 'difference', color: '#fff' } : {}}
+                                className={cn(
+                                    "text-base font-medium transition-colors px-2 py-1 rounded-lg hover:text-green-500",
+                                    scrolled && "text-gray-900 ",
+                                    !scrolled && "text-gray-900",
+                                    pathname.endsWith(link.href) && "text-green-600"
+                                )}
                             >
                                 {link.label}
                             </Link>
@@ -222,7 +228,7 @@ export const Nav = ({ links }: NavProps) => {
                     <SignedIn>
                         <UserButton />
                     </SignedIn>
-                    {
+                    {loading ? null :
                         user?.role !== "Admin" && (
                             <>
                                 <RequestCallbackModal>
