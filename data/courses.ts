@@ -1,3 +1,5 @@
+import { ICourse } from "@/models/Course";
+
 // /data/courses.ts
 export const fetchCourses = async () => {
   try {
@@ -16,3 +18,13 @@ export const fetchCourses = async () => {
     return [];
   }
 };
+
+export async function getCourse(id: string): Promise<ICourse | null> {
+  try {
+    const courses: ICourse[] = await fetchCourses();
+    return courses.find((c) => c._id.toString() === id) || null;
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    return null;
+  }
+}

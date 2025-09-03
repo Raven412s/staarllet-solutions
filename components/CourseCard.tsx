@@ -131,7 +131,7 @@ const CourseCard = ({ courses }: Props) => {
                     <h3 className="text-lg font-medium text-gray-800 mb-3">Course Content</h3>
                     <div className="space-y-3">
                       {course.syllabus.map((module: Module, index: number) => (
-                        <div key={module._id} className="bg-gray-50 p-4 rounded-lg">
+                        <div key={module._id?.toString()} className="bg-gray-50 p-4 rounded-lg">
                           <h4 className="font-medium text-gray-800">
                             Module {index + 1}: {module.title}
                           </h4>
@@ -152,7 +152,7 @@ const CourseCard = ({ courses }: Props) => {
                       <h3 className="text-lg font-medium text-gray-800 mb-3">Frequently Asked Questions</h3>
                       <div className="space-y-3">
                         {course.faqs.map((faq: FAQ) => (
-                          <div key={faq._id} className="bg-gray-50 p-4 rounded-lg">
+                          <div key={faq._id?.toString()} className="bg-gray-50 p-4 rounded-lg">
                             <h4 className="font-medium text-gray-800">Q: {faq.question}</h4>
                             <p className="text-sm text-gray-600 mt-1">A: {faq.answer}</p>
                           </div>

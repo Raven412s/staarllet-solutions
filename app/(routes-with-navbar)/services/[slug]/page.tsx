@@ -26,10 +26,6 @@ export default async function SingleServicePage(
     if (!pageData) return null;
 
     const hasComponent = slug in serviceComponents;
-    console.log("Slug param:", slug);
-    console.log("Service keys:", Object.keys(serviceComponents));
-
-
     return (
         <SectionWrapper
             navbarSpacing="loose"

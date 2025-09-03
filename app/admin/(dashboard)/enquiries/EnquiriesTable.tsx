@@ -16,7 +16,7 @@ interface EnquiriesTableProps {
   status: string;
 }
 
-export default function EnquiriesTable({ enquiries, pagination, search, status }: EnquiriesTableProps) {
+export default function EnquiriesTable({ enquiries}: EnquiriesTableProps) {
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggleSelect = (id: string) => {

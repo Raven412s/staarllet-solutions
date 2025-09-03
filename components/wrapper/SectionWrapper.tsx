@@ -1,7 +1,7 @@
 
 
 import { cn } from '@/lib/utils'
-import React, { PropsWithChildren, useEffect } from 'react'
+import React, { PropsWithChildren } from 'react'
 
 type SectionWrapperProps = PropsWithChildren & {
     className?: string

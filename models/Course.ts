@@ -4,27 +4,29 @@ export interface Lesson {
   title: string;
   content: string;
   duration: number;
-  videoUrl?: string; // Added to match form
+  videoUrl?: string;
+  _id?: mongoose.Types.ObjectId;
 }
 
 export interface Module {
-  _id: string;
-  description: string
   title: string;
+  description: string;
   lessons: Lesson[];
+  _id?: mongoose.Types.ObjectId;
 }
 
 export interface FAQ {
-  _id: string
   question: string;
   answer: string;
+  _id?: mongoose.Types.ObjectId;
 }
 
 export interface Review {
-  user: mongoose.Types.ObjectId;
+  user: string;
   rating: number;
   comment: string;
-  createdAt: Date;
+  date: Date;
+  _id?: mongoose.Types.ObjectId;
 }
 
 export interface ICourse extends Document {
@@ -38,14 +40,15 @@ export interface ICourse extends Document {
   discountedPrice?: number;
   currency: string;
   instructor: string;
-  whatYouWillLearn: string[]
+  whatYouWillLearn: string[];
   level: "beginner" | "intermediate" | "advanced";
   duration: string;
   language: string;
   category: string;
   status: string;
+  studentsEnrolled: number;
   rating: number;
-  requirements: string[]; // Changed from object array to string array
+  requirements: string[];
   syllabus: Module[];
   faqs: FAQ[];
   reviews: Review[];
@@ -64,6 +67,7 @@ const CourseSchema = new Schema<ICourse>(
     discountedPrice: { type: Number },
     currency: { type: String, default: "INR" },
     instructor: { type: String, required: true },
+    whatYouWillLearn: [{ type: String }],
     level: {
       type: String,
       enum: ["beginner", "intermediate", "advanced"],
@@ -72,16 +76,20 @@ const CourseSchema = new Schema<ICourse>(
     duration: { type: String, required: true },
     language: { type: String, default: "English" },
     category: { type: String, required: true },
-    requirements: [{ type: String }], // Changed to array of strings
+    status: { type: String, default: "draft" },
+    studentsEnrolled: { type: Number, default: 0 },
+    rating: { type: Number, default: 0 },
+    requirements: [{ type: String }],
     syllabus: [
       {
         title: { type: String, required: true },
+        description: { type: String, default: "" },
         lessons: [
           {
             title: { type: String, required: true },
             content: { type: String },
             duration: { type: Number },
-            videoUrl: { type: String }, // Added to match form
+            videoUrl: { type: String },
           },
         ],
       },
@@ -94,10 +102,10 @@ const CourseSchema = new Schema<ICourse>(
     ],
     reviews: [
       {
-        user: { type: Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number, min: 1, max: 5 },
-        comment: String,
-        createdAt: { type: Date, default: Date.now },
+        user: { type: String, required: true },
+        rating: { type: Number, min: 1, max: 5, required: true },
+        comment: { type: String, required: true },
+        date: { type: Date, default: Date.now },
       },
     ],
   },

@@ -4,6 +4,8 @@ import { SectionThemeProvider } from '@/context/SectionThemeContext'
 import { links } from '@/data/nav'
 import { PropsWithChildren, Suspense } from 'react'
 
+export const experimental_ppr = true
+
 const layout = ({ children }: PropsWithChildren) => {
     return (
         <Suspense>
