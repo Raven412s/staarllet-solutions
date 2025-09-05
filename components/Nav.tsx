@@ -210,9 +210,9 @@ export const Nav = ({ links }: NavProps) => {
 
                 {/* Actions */}
                 <div id="actions" className="flex items-center gap-1 md:gap-2">
-                    <button className="hidden md:flex w-9 h-9 items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
+                    {/* <button className="hidden md:flex w-9 h-9 items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors">
                         <FiSearch className="w-5 h-5 text-gray-700" />
-                    </button>
+                    </button> */}
                     <SignedOut>
                         <SignInButton>
                             <Button className="rounded-xl" variant={"ghost"} >
