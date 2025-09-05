@@ -102,7 +102,9 @@ export async function DELETE(
     if (!course) {
       return NextResponse.json(
         { error: "Course not found" },
-        { status: 404 }
+        { status: 404 }rm -rf node_modules package-lock.json
+npm install
+
       );
     }
 
