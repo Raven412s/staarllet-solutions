@@ -1,3 +1,4 @@
+import { getUser } from '@/lib/getUser';
 import { connectToDb } from '@/lib/mongodb';
 import User from '@/models/User';
 import { NextRequest, NextResponse } from 'next/server';
@@ -9,7 +10,23 @@ export async function GET(
 ) {
   try {
     await connectToDb();
-    
+    const requestUser = await getUser();
+
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
+    }
+
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
+    }
+
+
     const { id } = await params;
     
     if (!id) {

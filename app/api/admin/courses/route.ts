@@ -6,11 +6,22 @@ import { getUser } from "@/lib/getUser";
 export async function POST(req: NextRequest) {
   try {
     await connectToDb();
-
-    const session = await getUser();
-    if (!session && session.role !== "Admin") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const requestUser = await getUser();
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
     }
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
+    }
+    if (!requestUser || requestUser.role !== "Admin") {
+          return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
 
     const formData = await req.json();
     console.log("API received formData:", formData); // Debug log

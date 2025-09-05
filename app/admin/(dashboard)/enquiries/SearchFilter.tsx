@@ -1,11 +1,11 @@
+// app/admin/enquiries/SearchFilter.tsx
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { Filter, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Filter, Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface SearchFilterProps {
     search: string;
@@ -56,10 +56,6 @@ export default function SearchFilter({ search, status }: SearchFilterProps) {
         router.push(buildUrl({ status: value, page: '1' }));
     };
 
-    const handleApplyFilters = () => {
-        router.push(buildUrl({ search: searchValue, status, page: '1' }));
-    };
-
     return (
         <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <div className="relative">
@@ -84,10 +80,6 @@ export default function SearchFilter({ search, status }: SearchFilterProps) {
                     <SelectItem value="not-called">Not Called</SelectItem>
                 </SelectContent>
             </Select>
-
-            <Button onClick={handleApplyFilters} size="sm">
-                Apply Filters
-            </Button>
         </div>
     );
 }

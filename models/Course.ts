@@ -38,14 +38,14 @@ export interface ICourse extends Document {
   introVideo?: string;
   price: number;
   discountedPrice?: number;
-  currency: string;
+  currency: "INR" | "USD" | "EUR";
   instructor: string;
   whatYouWillLearn: string[];
   level: "beginner" | "intermediate" | "advanced";
   duration: string;
   language: string;
   category: string;
-  status: string;
+  status: "published" | "draft";
   studentsEnrolled: number;
   rating: number;
   requirements: string[];

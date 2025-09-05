@@ -1,6 +1,7 @@
 // app/api/admin/images/route.ts
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { getUser } from '@/lib/getUser';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,6 +11,22 @@ cloudinary.config({
 
 export async function GET() {
   try {
+    const requestUser = await getUser();
+
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
+    }
+
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
+    }
+  
     const result = await cloudinary.api.resources({
       type: 'upload',
       max_results: 500,

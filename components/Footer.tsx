@@ -1,10 +1,81 @@
 "use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { FaLinkedin, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowUp } from "react-icons/fa";
+import {
+  FaLinkedin,
+  FaInstagram,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaArrowUp,
+  FaFacebook,
+} from "react-icons/fa";
 import Image from "next/image";
 
+type ContactType = "address" | "phone" | "email";
+interface Contact { id: string; type: ContactType; value: string; }
+interface Social { id: string; platform: string; url: string; }
+interface Settings {
+  siteName: string;
+  siteDescription: string;
+  contacts: Contact[];
+  socialMedia: Social[];
+  logo: string;
+  favicon: string;
+}
+
 export default function Footer() {
+  const [settings, setSettings] = useState<Settings | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((r) => r.json())
+      .then((data) => setSettings(data))
+      .catch(() => {});
+  }, []);
+
+  const getContact = (type: ContactType) =>
+    settings?.contacts?.find((c) => c.type === type)?.value;
+
+  // Preserve your original values as fallbacks:
+  const email = getContact("email") || "info@staarllet.com";
+  const phone = getContact("phone") || "+1 (555) 123-4567";
+  const address = getContact("address") || "New York, NY";
+
+  // Preserve your 3 social buttons (same order, same gradients), but fill from DB if present:
+  const socials = [
+    {
+      label: "Email",
+      href: `mailto:${email}`,
+      icon: FaEnvelope,
+      gradient: "from-red-400 to-red-600",
+    },
+    {
+      label: "LinkedIn",
+      href:
+        settings?.socialMedia?.find((s) => s.platform === "linkedin")?.url ||
+        "https://www.linkedin.com/company/staarllet",
+      icon: FaLinkedin,
+      gradient: "from-blue-500 to-blue-700",
+    },
+    {
+      label: "Instagram",
+      href:
+        settings?.socialMedia?.find((s) => s.platform === "instagram")?.url ||
+        "https://www.instagram.com/staarllet",
+      icon: FaInstagram,
+      gradient: "from-pink-500 to-purple-600",
+    },
+    {
+      label: "facebook",
+      href:
+        settings?.socialMedia?.find((s) => s.platform === "facebook")?.url ||
+        "https://www.facebook.com/staarllet",
+      icon: FaFacebook,
+      gradient:  "from-blue-500 to-blue-700",
+    },
+  ];
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -51,18 +122,24 @@ export default function Footer() {
                             </p>
 
                             <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-gray-600">
-                                    <FaEnvelope className="text-green-600 text-sm" />
-                                    <span className="text-sm">info@staarllet.com</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-gray-600">
-                                    <FaPhone className="text-green-600 text-sm" />
-                                    <span className="text-sm">+1 (555) 123-4567</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-gray-600">
-                                    <FaMapMarkerAlt className="text-green-600 text-sm" />
-                                    <span className="text-sm">New York, NY</span>
-                                </div>
+                                {email && (
+                                    <div className="flex items-center gap-3 text-gray-600">
+                                        <FaEnvelope className="text-green-600 text-sm" />
+                                        <span className="text-sm">{email}</span>
+                                    </div>
+                                )}
+                                {phone && (
+                                    <div className="flex items-center gap-3 text-gray-600">
+                                        <FaPhone className="text-green-600 text-sm" />
+                                        <span className="text-sm">{phone}</span>
+                                    </div>
+                                )}
+                                {address && (
+                                    <div className="flex items-center gap-3 text-gray-600">
+                                        <FaMapMarkerAlt className="text-green-600 text-sm" />
+                                        <span className="text-sm">{address}</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -112,59 +189,36 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* Social media section */}
-                    <div className="border-t border-green-100 pt-8 mb-8">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div>
-                                <h4 className="text-lg font-semibold text-green-800 mb-2">Stay Connected</h4>
-                                <p className="text-gray-600 text-sm">Follow us for the latest updates and industry insights</p>
-                            </div>
 
-                            <div className="flex gap-4">
-                                {[
-                                    {
-                                        href: "mailto:info@staarllet.com",
-                                        icon: FaEnvelope,
-                                        label: "Email",
-                                        gradient: "from-red-400 to-red-600"
-                                    },
-                                    {
-                                        href: "https://www.linkedin.com/company/staarllet",
-                                        icon: FaLinkedin,
-                                        label: "LinkedIn",
-                                        gradient: "from-blue-500 to-blue-700"
-                                    },
-                                    {
-                                        href: "https://www.instagram.com/staarllet",
-                                        icon: FaInstagram,
-                                        label: "Instagram",
-                                        gradient: "from-pink-500 to-purple-600"
-                                    }
-                                ].map((social) => (
-                                    <a
-                                        key={social.label}
-                                        href={social.href}
-                                        target={social.href.startsWith('http') ? "_blank" : undefined}
-                                        rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
-                                        className={cn(
-                                            "group relative p-3 rounded-xl transition-all duration-300",
-                                            "bg-white shadow-md hover:shadow-lg hover:-translate-y-1",
-                                            "border border-gray-100 hover:border-transparent"
-                                        )}
-                                        aria-label={social.label}
-                                    >
-                                        <div className={cn(
-                                            "absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                                            `bg-gradient-to-br ${social.gradient}`
-                                        )} />
-                                        <social.icon className={cn(
-                                            "relative z-10 text-xl transition-colors duration-300",
-                                            "text-gray-600 group-hover:text-white"
-                                        )} />
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
+                    {/* Social media section — replace your existing mapped array with this: */}
+                    <div className="flex gap-4">
+                        {socials.map((social) => (
+                            <a
+                                key={social.label}
+                                href={social.href}
+                                target={social.href.startsWith("http") ? "_blank" : undefined}
+                                rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                                className={cn(
+                                    "group relative p-3 rounded-xl transition-all duration-300",
+                                    "bg-white shadow-md hover:shadow-lg hover:-translate-y-1",
+                                    "border border-gray-100 hover:border-transparent"
+                                )}
+                                aria-label={social.label}
+                            >
+                                <div
+                                    className={cn(
+                                        "absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                                        `bg-gradient-to-br ${social.gradient}`
+                                    )}
+                                />
+                                <social.icon
+                                    className={cn(
+                                        "relative z-10 text-xl transition-colors duration-300",
+                                        "text-gray-600 group-hover:text-white"
+                                    )}
+                                />
+                            </a>
+                        ))}
                     </div>
 
                     {/* Bottom bar */}

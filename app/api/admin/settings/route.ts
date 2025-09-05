@@ -2,11 +2,27 @@
 import { NextResponse } from 'next/server';
 import { connectToDb } from '@/lib/mongodb';
 import Setting from '@/models/Setting';
+import { getUser } from '@/lib/getUser';
 
 export async function GET() {
   try {
     await connectToDb();
-    
+    const requestUser = await getUser();
+
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
+    }
+
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
+    }
+
     // Get settings or return defaults
     let settings = await Setting.findOne();
     

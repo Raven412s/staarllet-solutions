@@ -42,7 +42,7 @@ async function getEnquiries(params: {
 }
 
 export default async function FetchedEnquiries({ searchParams }: FetchedEnquiriesProps) {
-  const params = await searchParams
+  const params = searchParams
   const page = params.page || '1';
   const limit = params.limit || '10';
   const search = params.search || '';

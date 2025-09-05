@@ -1,4 +1,5 @@
-import { ICourse } from "@/models/Course";
+import { connectToDb } from "@/lib/mongodb";
+import Course, { ICourse } from "@/models/Course";
 
 // /data/courses.ts
 export const fetchCourses = async () => {
@@ -28,3 +29,14 @@ export async function getCourse(id: string): Promise<ICourse | null> {
     return null;
   }
 }
+
+export const getCourseById = async (id: string) => {
+  try {
+    await connectToDb();
+    const course = await Course.findById(id);
+    return JSON.parse(JSON.stringify(course)); // Convert to plain object
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return null;
+  }
+};

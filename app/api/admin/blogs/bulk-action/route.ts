@@ -5,9 +5,20 @@ import { connectToDb } from '@/lib/mongodb';
 
 export async function PATCH(req: NextRequest) {
   try {
-    const user = await getUser();
-    if (!user || user.role !== 'Admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const requestUser = await getUser();
+
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
+    }
+
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
     }
 
     await connectToDb();

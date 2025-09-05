@@ -8,9 +8,24 @@ export async function DELETE(
   { params }: { params: Promise<{ blogId: string }> }
 ) {
   try {
-    const user = await getUser();
-    if (!user || user.role !== 'Admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      const requestUser = await getUser();
+    if (!requestUser) {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
+    }
+    if (requestUser.role !== "Admin") {
+        return NextResponse.json(
+            { error: "Forbidden: You are not an admin" },
+            { status: 403 }
+        );
+    }
+    if (!requestUser || requestUser.role !== 'Admin') {
+        return NextResponse.json(
+            { error: "Unauthorized: Please login first" },
+            { status: 401 }
+        );
     }
 
     await connectToDb();
@@ -39,18 +54,18 @@ export async function GET(
 ) {
   try {
     const { blogId } = await params;
-    const user = await getUser(); // This returns the user object directly
+    const requestUser = await getUser(); // This returns the user object directly
     
-    console.log('User data:', user); // Debug log
+    console.log('User data:', requestUser); // Debug log
     
     // Check if user is authenticated - user should be the object directly
-    if (!user) {
+    if (!requestUser) {
       console.log('Unauthorized access attempt - no user');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
     // Optional: Add role-based access control
-    if (user.role !== 'Admin') {
+    if (requestUser.role !== 'Admin') {
       console.log('Forbidden access attempt - not admin');
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
