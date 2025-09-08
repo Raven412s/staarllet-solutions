@@ -1,3 +1,4 @@
+// models/Enquiry.ts
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IEnquiry extends Document {

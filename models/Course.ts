@@ -1,3 +1,4 @@
+// models/Course.ts
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface Lesson {
@@ -23,6 +24,7 @@ export interface FAQ {
 
 export interface Review {
   user: string;
+  userEmail?: string; // Add email field to track users
   rating: number;
   comment: string;
   date: Date;
@@ -103,6 +105,7 @@ const CourseSchema = new Schema<ICourse>(
     reviews: [
       {
         user: { type: String, required: true },
+        userEmail: { type: String }, // Add email field
         rating: { type: Number, min: 1, max: 5, required: true },
         comment: { type: String, required: true },
         date: { type: Date, default: Date.now },

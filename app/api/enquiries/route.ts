@@ -4,15 +4,15 @@ import Enquiry from "@/models/Enquiry";
 import nodemailer from "nodemailer";
 import { connectToDb } from "@/lib/mongodb";
 import { format } from "date-fns";
+import Notification from "@/models/Notification";
 
 interface EnquiryIF {
-  name: string
-  message: string
-  phone: string
-  type: string
-  email: string
+  name: string;
+  message: string;
+  phone: string;
+  type: string;
+  email: string;
 }
-
 
 // Email-safe template function (Gmail/Outlook compatible)
 function createEmailSafeTemplate(enquiry: EnquiryIF, formattedDate: string) {
@@ -257,7 +257,9 @@ function createEmailSafeTemplate(enquiry: EnquiryIF, formattedDate: string) {
                                             </td>
                                             <td>
                                                 <div class="detail-label">Customer Name</div>
-                                                <div class="detail-value">${enquiry.name}</div>
+                                                <div class="detail-value">${
+                                                  enquiry.name
+                                                }</div>
                                             </td>
                                         </tr>
                                     </table>
@@ -274,7 +276,9 @@ function createEmailSafeTemplate(enquiry: EnquiryIF, formattedDate: string) {
                                             <td>
                                                 <div class="detail-label">Email Address</div>
                                                 <div class="detail-value">
-                                                    <a href="mailto:${enquiry.email}">${enquiry.email}</a>
+                                                    <a href="mailto:${
+                                                      enquiry.email
+                                                    }">${enquiry.email}</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -291,7 +295,9 @@ function createEmailSafeTemplate(enquiry: EnquiryIF, formattedDate: string) {
                                             </td>
                                             <td>
                                                 <div class="detail-label">Phone Number</div>
-                                                <div class="detail-value">${enquiry.phone}</div>
+                                                <div class="detail-value">${
+                                                  enquiry.phone
+                                                }</div>
                                             </td>
                                         </tr>
                                     </table>
@@ -309,7 +315,10 @@ function createEmailSafeTemplate(enquiry: EnquiryIF, formattedDate: string) {
                                                 <div class="detail-label">Message</div>
                                                 <div class="detail-value">
                                                     <div class="message-box">
-                                                        ${enquiry.message || 'No message provided'}
+                                                        ${
+                                                          enquiry.message ||
+                                                          "No message provided"
+                                                        }
                                                     </div>
                                                 </div>
                                             </td>
@@ -370,7 +379,20 @@ export async function POST(req: Request) {
     const { name, email, phone, message, type, course } = body;
 
     // 1️⃣ Save enquiry in DB
-    const enquiry = await Enquiry.create({ name, email, phone, message, type, course });
+    const enquiry = await Enquiry.create({
+      name,
+      email,
+      phone,
+      message,
+      type,
+      course,
+    });
+
+    // 🔔 Create notification
+    await Notification.create({
+      type: "newEnquiry",
+      message: `New enquiry from ${enquiry.name} (${enquiry.email})`,
+    });
 
     // 2️⃣ Respond immediately (so user doesn't wait for email)
     const response = NextResponse.json({ success: true, enquiry });
@@ -391,7 +413,7 @@ export async function POST(req: Request) {
     transporter
       .sendMail({
         from: `"Website Enquiry" <${process.env.SMTP_USER}>`,
-        to: 'hr@staarllet.com',
+        to: "hr@staarllet.com",
         subject: "🚀 New Customer Enquiry - Action Required",
         html: emailHtml,
       })
@@ -405,4 +427,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
-

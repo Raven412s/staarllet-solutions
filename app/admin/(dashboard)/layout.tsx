@@ -30,7 +30,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* Sticky Navbar */}
         <div className="sticky top-0 z-30">
           <AdminNavbar 
-            isSidebarCollapsed={isSidebarCollapsed}
             onToggleSidebar={toggleSidebar}
           />
         </div>

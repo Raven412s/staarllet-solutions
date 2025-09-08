@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCourse } from "@/data/courses";
 import { VideoModal } from "@/components/modals/VideoModal";
 import GetAQuoteModal from "@/components/modals/get-a-quote";
+import { ReviewsTab } from "@/components/courses/ReviewTab";
 
 // Client component that uses the course data
 export async function CourseDetailContent({ courseId }: { courseId: string }) {
@@ -239,32 +240,7 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                 </TabsContent>
 
                                 <TabsContent value="reviews" className="mt-6">
-                                    <h2 className="text-3xl font-bold text-gray-800 mb-6">Student Reviews</h2>
-                                    <div className="space-y-6">
-                                        {course.reviews.map((review, index) => (
-                                            <Card key={index} className="p-6 rounded-xl">
-                                                <CardContent className="p-0">
-                                                    <div className="flex items-start justify-between mb-4">
-                                                        <div>
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <div className="flex">
-                                                                    {[...Array(5)].map((_, i) => (
-                                                                        <Star
-                                                                            key={i}
-                                                                            className={`w-4 h-4 ${i < Math.floor(review.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
-                                                                        />
-                                                                    ))}
-                                                                </div>
-                                                                <span className="font-semibold text-gray-800">{review.user}</span>
-                                                            </div>
-                                                        </div>
-                                                        <span className="text-sm text-gray-500">{formatDate(review.date)}</span>
-                                                    </div>
-                                                    <p className="text-gray-700 leading-relaxed">{review.comment}</p>
-                                                </CardContent>
-                                            </Card>
-                                        ))}
-                                    </div>
+                                    <ReviewsTab courseId={courseId} initialReviews={course.reviews} />
                                 </TabsContent>
 
                                 <TabsContent value="faq" className="mt-6">

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDb } from "@/lib/mongodb";
 import User from "@/models/User";
+import Notification from "@/models/Notification";
 
 export async function POST(req: Request) {
   try {
@@ -23,12 +24,18 @@ export async function POST(req: Request) {
     const userCount = await User.countDocuments();
     const role = userCount === 0 ? "Admin" : "Public";
 
-    await User.create({
+    const newUser = await User.create({
       name: `${first_name || ""} ${last_name || ""}`.trim(),
       email: email_addresses[0].email_address,
       clerkId,
       role,
       image: image_url,
+    });
+
+    // 🔔 Create notification
+    await Notification.create({
+      type: "newUser",
+      message: `New user registered: ${newUser.name}`,
     });
 
     return NextResponse.json({ ok: true }, { status: 201 });
