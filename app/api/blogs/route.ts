@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Blog from '@/models/Blog';
 import { connectToDb } from '@/lib/mongodb';
 import { getUser } from '@/lib/getUser';
+import User from '@/models/User';
 
 
 // GET all published blogs (for public listing)
@@ -68,7 +69,13 @@ export async function POST(request: NextRequest) {
     });
     
     await blog.save();
+
     
+    // Push blog ID into user's myBlogs
+    await User.findByIdAndUpdate(user._id, {
+      $push: { myBlogs: blog._id }
+    });
+
     // Populate createdBy field
     await blog.populate('createdBy', 'name email');
     
@@ -81,3 +88,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+
