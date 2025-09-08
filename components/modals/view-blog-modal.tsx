@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Calendar, Clock, Eye, FileText, User } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface BlogViewModalProps {
   blogId: string;
@@ -46,10 +46,20 @@ export function BlogViewModal({ blogId, isOpen, onClose }: BlogViewModalProps) {
   const [blog, setBlog] = useState<IBlog | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && blogId) {
       fetchBlog();
+    }
+    
+    // Reset scroll position when modal opens
+    if (isOpen && scrollRef.current) {
+      setTimeout(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = 0;
+        }
+      }, 100);
     }
   }, [isOpen, blogId]);
 
@@ -101,9 +111,42 @@ export function BlogViewModal({ blogId, isOpen, onClose }: BlogViewModalProps) {
     });
   };
 
+  // Handle wheel event on the dialog to allow scrolling
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (!scrollRef.current) return;
+      
+      const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+      const isAtTop = scrollTop === 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+      
+      // Prevent the page behind from scrolling when modal is open
+      if (isOpen) {
+        e.stopPropagation();
+        
+        // If we're at the top and scrolling up, or at the bottom and scrolling down,
+        // prevent the default to avoid body scrolling
+        if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    const scrollElement = scrollRef.current;
+    if (scrollElement) {
+      scrollElement.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [isOpen]);
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-hidden pointer-events-auto p-0">
+      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
         <DialogHeader className="px-6 py-4 border-b">
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
@@ -113,7 +156,7 @@ export function BlogViewModal({ blogId, isOpen, onClose }: BlogViewModalProps) {
           </div>
         </DialogHeader>
 
-        <ScrollArea className="h-[70vh] px-6 pointer-events-auto">
+        <ScrollArea className="flex-1 px-6" ref={scrollRef}>
           {loading && (
             <div className="space-y-4 py-4">
               <Skeleton className="h-8 w-3/4" />
@@ -226,7 +269,7 @@ export function BlogViewModal({ blogId, isOpen, onClose }: BlogViewModalProps) {
               <Separator className="my-6" />
 
               {/* Actions */}
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 py-4 sticky bottom-0 bg-background">
                 <Button variant="outline" onClick={onClose}>
                   Close
                 </Button>

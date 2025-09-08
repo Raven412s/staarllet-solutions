@@ -4,6 +4,7 @@ import Blog from '@/models/Blog';
 import { connectToDb } from '@/lib/mongodb';
 import { getUser } from '@/lib/getUser';
 import User from '@/models/User';
+import Notification from '@/models/Notification';
 
 
 // GET all published blogs (for public listing)
@@ -71,6 +72,12 @@ export async function POST(request: NextRequest) {
     await blog.save();
 
     
+        // 🔔 Create notification
+    await Notification.create({
+      type: "newBlog",
+      message: `${user.name} created a new blog: ${blog.title}`,
+    });
+
     // Push blog ID into user's myBlogs
     await User.findByIdAndUpdate(user._id, {
       $push: { myBlogs: blog._id }

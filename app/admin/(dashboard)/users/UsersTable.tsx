@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { IUser } from '@/models/User';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -9,13 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import UserActions from './UserActions';
-import Image from 'next/image';
-import { User } from 'lucide-react';
-import BulkActions from './BulkActions';
 import { formatDate } from '@/lib/utils';
+import { User } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import BulkActions from './BulkActions';
+import UserActions from './UserActions';
 
 interface PaginationInfo {
   page: number;
@@ -24,8 +23,27 @@ interface PaginationInfo {
   pages: number;
 }
 
+
+export interface IUserDto {
+  name: string;
+  role: 'Admin' | 'Public';
+  email: string;
+  clerkId: string;
+  id: string;
+  myBlogs?: string[];
+  resume?: string;
+  image?: string;
+  enrolledCourses?: string[];
+  achievements?: string[];
+  myEnquiries?: string[];
+  isBanned?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
 interface UsersTableProps {
-  users: IUser[];
+  users: IUserDto[];
   pagination: PaginationInfo;
   search: string;
   role: string;

@@ -2,7 +2,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface INotification extends Document {
-  type: "newUser" | "newEnquiry" | "newReview";
+  type: "newUser" | "newEnquiry" | "newReview"| "newBlog";
   message: string;
   createdAt: Date;
   read: boolean;
@@ -12,7 +12,7 @@ const NotificationSchema = new Schema<INotification>(
   {
     type: {
       type: String,
-      enum: ["newUser", "newEnquiry", "newReview"],
+      enum: ["newUser", "newEnquiry", "newReview", "newBlog"],
       required: true,
     },
     message: { type: String, required: true },

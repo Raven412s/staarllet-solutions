@@ -23,9 +23,10 @@ import EditUserModal from '@/components/modals/edit-user-modal';
 import EmailFormModal from '@/components/modals/email-modal';
 import ViewUserDetailsModal from '@/components/modals/view-user-details';
 import { useRouter } from 'next/navigation';
+import { IUserDto } from './UsersTable';
 
 interface UserActionsProps {
-  user: IUser;
+  user: IUserDto;
 }
 
 export default function UserActions({ user }: UserActionsProps) {

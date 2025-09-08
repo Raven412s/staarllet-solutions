@@ -4,9 +4,10 @@ import { IUser } from '@/models/User';
 import { Button } from '@/components/ui/button';
 import { Mail, Ban, User, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { IUserDto } from './UsersTable';
 
 interface BulkActionsProps {
-  users: IUser[];
+  users: IUserDto[];
   selected: string[];
   onSelectChange: (selected: string[]) => void;
 }

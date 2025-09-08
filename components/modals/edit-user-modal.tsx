@@ -32,6 +32,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import type { IUser } from '@/models/User'; // Use type import to avoid runtime issues
+import { IUserDto } from '@/app/admin/(dashboard)/users/UsersTable';
 
 // Validation schema
 const editUserSchema = z.object({
@@ -44,7 +45,7 @@ const editUserSchema = z.object({
 type EditUserFormValues = z.infer<typeof editUserSchema>;
 
 interface EditUserModalProps {
-  user: IUser;
+  user: IUserDto;
   children: React.ReactNode;
   onSuccess?: () => void;
   open?: boolean;

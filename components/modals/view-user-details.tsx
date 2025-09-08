@@ -1,5 +1,6 @@
 // components/modals/view-user-detail.tsx
 "use client";
+import { IUserDto } from "@/app/admin/(dashboard)/users/UsersTable";
 import { Badge } from "@/components/ui/badge";
 import {
     Dialog,
@@ -17,7 +18,7 @@ import Image from "next/image";
 import React from 'react';
 
 interface ViewUserDetailsModalProps {
-    user: IUser;
+    user: IUserDto;
     children: React.ReactNode;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;

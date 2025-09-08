@@ -6,6 +6,7 @@ import Link from 'next/link';
 import SearchFilter from './SearchFilter';
 import PaginationControls from './PaginationControls';
 import UsersTable from './UsersTable';
+import { getUsersFromDb } from '@/lib/getUser';
 
 interface PaginationInfo {
   page: number;
@@ -31,35 +32,6 @@ interface FetchedUsersProps {
   };
 }
 
-async function getUsers(params: {
-  page?: string;
-  limit?: string;
-  search?: string;
-  role?: string;
-  status?: string;
-  sortBy?: string;
-  sortOrder?: string;
-}): Promise<{ users: IUser[]; pagination: PaginationInfo }> {
-  const queryParams = new URLSearchParams();
-
-  if (params.page) queryParams.append('page', params.page);
-  if (params.limit) queryParams.append('limit', params.limit);
-  if (params.search) queryParams.append('search', params.search);
-  if (params.role && params.role !== 'all') queryParams.append('role', params.role);
-  if (params.status && params.status !== 'all') queryParams.append('status', params.status);
-  if (params.sortBy) queryParams.append('sortBy', params.sortBy);
-  if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
-
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/admin/users?${queryParams}`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch users');
-  }
-
-  return res.json();
-}
 
 export default async function FetchedUsers({ searchParams }: FetchedUsersProps) {
   const page = searchParams.page || '1';
@@ -70,15 +42,17 @@ export default async function FetchedUsers({ searchParams }: FetchedUsersProps) 
   const sortBy = searchParams.sortBy || 'createdAt';
   const sortOrder = searchParams.sortOrder || 'desc';
 
-  const { users, pagination } = await getUsers({
+
+  const { users, pagination } = await getUsersFromDb({
     page,
     limit,
     search,
     role,
     status,
     sortBy,
-    sortOrder
+    sortOrder,
   });
+
 
   const buildUrl = (updates: Record<string, string>) => {
     const params = new URLSearchParams();
@@ -125,10 +99,10 @@ export default async function FetchedUsers({ searchParams }: FetchedUsersProps) 
                 <RefreshCw className='h-4 w-4' />
               </Link>
             </Button>
-            <SearchFilter 
-              search={search} 
-              role={role} 
-              status={status} 
+            <SearchFilter
+              search={search}
+              role={role}
+              status={status}
               sortBy={sortBy}
               sortOrder={sortOrder}
             />
@@ -136,21 +110,21 @@ export default async function FetchedUsers({ searchParams }: FetchedUsersProps) 
         </div>
       </CardHeader>
       <CardContent>
-        <UsersTable 
-          users={users} 
-          pagination={pagination} 
-          search={search} 
-          role={role} 
-          status={status} 
+        <UsersTable
+          users={users}
+          pagination={pagination}
+          search={search}
+          role={role}
+          status={status}
           sortBy={sortBy}
           sortOrder={sortOrder}
         />
         {pagination.pages > 1 && (
-          <PaginationControls 
-            pagination={pagination} 
-            search={search} 
-            role={role} 
-            status={status} 
+          <PaginationControls
+            pagination={pagination}
+            search={search}
+            role={role}
+            status={status}
             sortBy={sortBy}
             sortOrder={sortOrder}
           />
