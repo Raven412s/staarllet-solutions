@@ -56,7 +56,7 @@ export async function GET(
     const { blogId } = await params;
     const requestUser = await getUser(); // This returns the user object directly
     
-    console.log('User data:', requestUser); // Debug log
+    
     
     // Check if user is authenticated - user should be the object directly
     if (!requestUser) {

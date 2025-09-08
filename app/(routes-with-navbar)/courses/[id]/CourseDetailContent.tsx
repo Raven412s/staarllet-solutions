@@ -33,7 +33,7 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
     }
 
     const totalLessons = course.syllabus.reduce((acc, module) => acc + module.lessons.length, 0);
-    console.log(course.introVideo)
+    
     return (
         <SectionWrapper
             navbarSpacing="loose"

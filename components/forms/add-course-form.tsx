@@ -294,13 +294,12 @@ export default function AddCourseForm() {
       )
     };
 
-    console.log("Submitting values:", cleanedValues);
+    
 
     try {
       const response = await axios.post("/api/admin/courses", cleanedValues);
 
       if (response.status === 201) {
-        console.log("Course created successfully:", response.data.course);
         toast.success("Course created successfully")
         router.back();
       }

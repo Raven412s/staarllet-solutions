@@ -1,3 +1,4 @@
+//  api/admin/enquiries
 import { connectToDb } from "@/lib/mongodb";
 import Enquiry from "@/models/Enquiry";
 import Course from "@/models/Course"; // Add this import
@@ -10,17 +11,17 @@ export async function GET(request: NextRequest) {
     const requestUser = await getUser();
 
     if (!requestUser) {
-        return NextResponse.json(
-            { error: "Unauthorized: Please login first" },
-            { status: 401 }
-        );
+      return NextResponse.json(
+        { error: "Unauthorized: Please login first" },
+        { status: 401 }
+      );
     }
 
     if (requestUser.role !== "Admin") {
-        return NextResponse.json(
-            { error: "Forbidden: You are not an admin" },
-            { status: 403 }
-        );
+      return NextResponse.json(
+        { error: "Forbidden: You are not an admin" },
+        { status: 403 }
+      );
     }
 
     // Get query parameters

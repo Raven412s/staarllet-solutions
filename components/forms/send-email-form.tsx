@@ -56,9 +56,7 @@ export default function SendEmailForm({ to, onSuccess }: EmailProps) {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
-        try {
-            console.log(values);
-            
+        try {            
             // Map form fields to API expected fields
             const apiData = {
                 to: values.mail_recipient,

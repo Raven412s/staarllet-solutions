@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       }
 
     const formData = await req.json();
-    console.log("API received formData:", formData); // Debug log
+    
 
     // ✅ FIX: Check if requirements is already transformed or needs transformation
     let requirementsArray: string[];
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       instructor: formData.instructor,
     };
 
-    console.log("Transformed data for saving:", transformedData); // Debug log
+    
 
     const course = new Course(transformedData);
     await course.save();

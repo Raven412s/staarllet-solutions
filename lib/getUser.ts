@@ -5,11 +5,9 @@ import { connectToDb } from "./mongodb"
 
 export const getUser = async () => {
   const { userId } = await auth();
-
   if (!userId) return null;
 
   await connectToDb();
   const user = await User.findOne({ clerkId: userId });
-
-  return user;
+  return user; 
 };

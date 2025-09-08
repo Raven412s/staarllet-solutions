@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     
     // Check if user is authenticated
     const user = await getUser();
-    console.log("user :::::::::: user", user)
+    
     if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },

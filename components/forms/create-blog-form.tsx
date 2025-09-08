@@ -49,19 +49,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     const slug = generateSlug(title);
     const blogId = `blog_${Date.now()}`;
 
-    // Log the data before submitting
-    console.log('Submitting blog data:', {
-      title,
-      description,
-      coverImg,
-      content,
-      slug,
-      blogId,
-    });
-
-    // Also log the content structure in detail
-    console.log('Content structure:', JSON.stringify(content, null, 2));
-
     const response = await fetch('/api/blogs', {
       method: 'POST',
       headers: {

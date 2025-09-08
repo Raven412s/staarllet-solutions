@@ -1,14 +1,14 @@
 // app/admin/enquiries/FetchedEnquiries.tsx
-import { Enquiry, PaginationInfo } from '@/types/enquiry';
-import { RefreshCw } from 'lucide-react';
+import { getEnquiriesDirect } from '@/actions/getEnquiriesDirect';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RefreshCw } from 'lucide-react';
 import Link from 'next/link';
-import SearchFilter from './SearchFilter';
-import PaginationControls from './PaginationControls';
 import EnquiriesTable from './EnquiriesTable';
+import PaginationControls from './PaginationControls';
+import SearchFilter from './SearchFilter';
 
-interface FetchedEnquiriesProps {
+export interface FetchedEnquiriesProps {
   searchParams: {
     page?: string;
     limit?: string;
@@ -17,29 +17,6 @@ interface FetchedEnquiriesProps {
   };
 }
 
-async function getEnquiries(params: {
-  page?: string;
-  limit?: string;
-  search?: string;
-  status?: string;
-}): Promise<{ enquiries: Enquiry[]; pagination: PaginationInfo }> {
-  const queryParams = new URLSearchParams();
-
-  if (params.page) queryParams.append('page', params.page);
-  if (params.limit) queryParams.append('limit', params.limit);
-  if (params.search) queryParams.append('search', params.search);
-  if (params.status && params.status !== 'all') queryParams.append('status', params.status);
-
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/admin/enquiries?${queryParams}`, {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch enquiries');
-  }
-
-  return res.json();
-}
 
 export default async function FetchedEnquiries({ searchParams }: FetchedEnquiriesProps) {
   const params = searchParams
@@ -48,11 +25,11 @@ export default async function FetchedEnquiries({ searchParams }: FetchedEnquirie
   const search = params.search || '';
   const status = params.status || 'all';
 
-  const { enquiries, pagination } = await getEnquiries({
+  const { enquiries, pagination } = await getEnquiriesDirect({
     page,
     limit,
     search,
-    status
+    status,
   });
 
   const buildUrl = (updates: Record<string, string>) => {
@@ -102,11 +79,11 @@ export default async function FetchedEnquiries({ searchParams }: FetchedEnquirie
         </div>
       </CardHeader>
       <CardContent>
-        <EnquiriesTable 
-          enquiries={enquiries} 
-          pagination={pagination} 
-          search={search} 
-          status={status} 
+        <EnquiriesTable
+          enquiries={enquiries}
+          pagination={pagination}
+          search={search}
+          status={status}
         />
         {pagination.pages > 1 && (
           <PaginationControls pagination={pagination} search={search} status={status} />

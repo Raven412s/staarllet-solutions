@@ -53,7 +53,6 @@ export default function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-        console.log(values)
       // Example API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 

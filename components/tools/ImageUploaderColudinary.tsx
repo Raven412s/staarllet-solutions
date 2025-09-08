@@ -13,7 +13,6 @@ const ImageUploaderCloudinary = () => {
         value={imageUrl}
         onChange={(url) => {
           setImageUrl(url); // 👈 jaise hi file upload hoga, Cloudinary URL aa jayega
-          console.log("Uploaded Image URL:", url);
         }}
       />
 

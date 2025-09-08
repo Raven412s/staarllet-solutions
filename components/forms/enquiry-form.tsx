@@ -81,8 +81,6 @@ export default function EnquiryForm({
         // Use type-specific success message
         const message = successMessages[type] || "Request submitted successfully";
         toast.success(message);
-
-        console.log("Request callback form submitted:", data);
         form.reset(); // ✅ clear form
         onSuccess?.(values);
       } else {
