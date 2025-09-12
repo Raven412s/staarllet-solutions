@@ -67,7 +67,7 @@ export default function BlogsPage() {
 const PublishedBlogs = async () => {
     const blogs = await getBlogs();
     const publishedBlogs = blogs.filter(blog => blog.approved && blog.published);
-
+    console.log(publishedBlogs)
     if (publishedBlogs.length === 0) {
         return (
             <div className="text-center py-12">
@@ -108,7 +108,7 @@ const PublishedBlogs = async () => {
                             <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                             <span className="mx-2">•</span>
                             <User className="h-4 w-4 mr-1" />
-                            <span>{blog.createdBy.name}</span>
+                            <span>{blog.createdBy?.name}</span>
                         </div>
 
                         {/* Title */}
