@@ -25,3 +25,10 @@ export interface CoursesResponse {
     pages: number;
   };
 }
+
+export interface ICourseReview {
+  user: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}

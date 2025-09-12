@@ -53,10 +53,19 @@ export default function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      // Example API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...values,
+          type: 'forContact',
+        }),
+      });
 
-      toast.success("Message sent successfully!");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Failed to send enquiry');
+
+      toast.success('Message sent successfully!');
       form.reset();
     } catch {
       toast.error("Something went wrong. Please try again.");

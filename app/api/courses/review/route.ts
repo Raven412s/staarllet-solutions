@@ -5,6 +5,7 @@ import Course from "@/models/Course";
 import { connectToDb } from "@/lib/mongodb";
 import { getUser } from "@/lib/getUser";
 import Notification from "@/models/Notification";
+import { ICourseReview } from '@/types/course';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Check if user already reviewed this course
     const course = await Course.findById(courseId);
     const existingReview = course.reviews.find(
-      (review: any) => review.user === user.email
+      (review: ICourseReview) => review.user === user.email
     );
 
     if (existingReview) {

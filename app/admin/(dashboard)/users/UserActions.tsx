@@ -1,6 +1,9 @@
 'use client';
 
-import { IUser } from '@/models/User';
+import EditUserModal from '@/components/modals/edit-user-modal';
+import EmailFormModal from '@/components/modals/email-modal';
+import ViewUserDetailsModal from '@/components/modals/view-user-details';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import {
   Ban,
   Edit,
@@ -19,9 +21,6 @@ import {
   Trash2,
   User
 } from 'lucide-react';
-import EditUserModal from '@/components/modals/edit-user-modal';
-import EmailFormModal from '@/components/modals/email-modal';
-import ViewUserDetailsModal from '@/components/modals/view-user-details';
 import { useRouter } from 'next/navigation';
 import { IUserDto } from './UsersTable';
 

@@ -54,6 +54,46 @@ export default async function FetchedUsers({ searchParams }: FetchedUsersProps) 
   });
 
 
+  // Helper: deep-serialize values coming from Mongo/Mongoose so that
+  // we only pass plain objects/primitives to Client Components.
+  const serializeValue = (val: any): any => {
+    if (val === null || val === undefined) return null;
+
+    // Dates -> ISO strings
+    if (val instanceof Date) return val.toISOString();
+
+    // Buffers (GridFS, binary) -> base64
+    if (typeof Buffer !== 'undefined' && Buffer.isBuffer(val)) return val.toString('base64');
+
+    // Mongoose ObjectId have a toHexString or _bsontype
+    if (typeof val === 'object') {
+      // Detect BSON ObjectId-ish
+      if (val && (typeof val.toHexString === 'function' || val._bsontype === 'ObjectID')) {
+        try {
+          return typeof val.toHexString === 'function' ? val.toHexString() : String(val);
+        } catch (e) {
+          return String(val);
+        }
+      }
+
+      // Arrays
+      if (Array.isArray(val)) return val.map(serializeValue);
+
+      // Plain object: recurse over keys
+      const out: Record<string, any> = {};
+      for (const [k, v] of Object.entries(val)) {
+        if (k === '_id') continue; // drop internal Mongo _id
+        out[k] = serializeValue(v);
+      }
+      return out;
+    }
+
+    // primitives (string/number/boolean)
+    return val;
+  };
+
+  const serializableUsers = users.map((u: any) => serializeValue(u));
+
   const buildUrl = (updates: Record<string, string>) => {
     const params = new URLSearchParams();
 
@@ -111,7 +151,7 @@ export default async function FetchedUsers({ searchParams }: FetchedUsersProps) 
       </CardHeader>
       <CardContent>
         <UsersTable
-          users={users}
+          users={serializableUsers}
           pagination={pagination}
           search={search}
           role={role}

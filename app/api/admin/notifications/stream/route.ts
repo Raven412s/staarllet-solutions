@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { connectToDb } from "@/lib/mongodb";
 import Notification from "@/models/Notification";
 

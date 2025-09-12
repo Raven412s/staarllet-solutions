@@ -37,8 +37,8 @@ export interface IUserDto {
   achievements?: string[];
   myEnquiries?: string[];
   isBanned?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
 
 
@@ -67,6 +67,8 @@ export default function UsersTable({ users }: UsersTableProps) {
     return isBanned ? 'destructive' : 'outline';
   };
 
+
+  if(!users) return
   return (
     <>
       <BulkActions 
@@ -155,7 +157,7 @@ export default function UsersTable({ users }: UsersTableProps) {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {formatDate(user.createdAt)}
+                  {user.createdAt ? formatDate(user.createdAt) : '-'}
                 </TableCell>
                 <TableCell>
                   {user.enrolledCourses?.length || 0}

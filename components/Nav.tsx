@@ -1,5 +1,7 @@
 "use client"
 import { Sheet, SheetClose, SheetContent, SheetTrigger, } from "@/components/ui/sheet";
+import { useCurrentUser } from "@/lib/useUser";
+import { cn } from "@/lib/utils";
 import "@/styles/navbar.css";
 import {
     SignInButton,
@@ -8,18 +10,16 @@ import {
     SignedOut,
     UserButton
 } from '@clerk/nextjs';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from 'react';
-import { FiMenu, FiSearch } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 import { MdCall } from "react-icons/md";
 import RequestCallbackModal from "./modals/request-a-callback";
 import { Button } from "./ui/button";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DialogTitle } from "./ui/dialog";
-import { useCurrentUser } from "@/lib/useUser";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 
 

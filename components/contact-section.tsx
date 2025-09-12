@@ -3,12 +3,39 @@ import ContactForm from "@/components/forms/contact-form"
 import { cn } from "@/lib/utils"
 import Copy from "./text-reveal/Copy"
 import SectionWrapper from "./wrapper/SectionWrapper"
+import { useEffect, useState } from "react"
 
-
+type ContactType = "address" | "phone" | "email";
+interface Contact { id: string; type: ContactType; value: string; }
+interface Social { id: string; platform: string; url: string; }
+interface Settings {
+  siteName: string;
+  siteDescription: string;
+  contacts: Contact[];
+  socialMedia: Social[];
+  logo: string;
+  favicon: string;
+}
 
 export const ContactSection = () => {
   // Form logic removed; handled by ContactForm
+  const [settings, setSettings] = useState<Settings | null>(null);
 
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((r) => r.json())
+      .then((data) => setSettings(data))
+      .catch(() => {});
+  }, []);
+
+  const getContact = (type: ContactType) =>
+    settings?.contacts?.find((c) => c.type === type)?.value;
+
+  // Preserve your original values as fallbacks:
+  const email = getContact("email") || "hr@staarllet.com";
+  const phone = getContact("phone") || "+916307607882";
+  const address = getContact("address") || "West Jyoti Nagar, Delhi";
+  
   return (
     <SectionWrapper
       navbarSpacing="none"
@@ -54,19 +81,15 @@ export const ContactSection = () => {
                 <div className=" flex lg:flex-row lg:gap-8 flex-col gap-3 items-start lg:items-center justify-start">
                   <p className="flex items-center gap-2">
                     <MapPinIcon className="h-5 w-5 text-green-600" />
-                    <span>West Jyoti nagar Delhi</span>
+                    <span>{address}</span>
                   </p>
                   <p className="flex items-center gap-2">
                     <PhoneIcon className="h-5 w-5 text-green-600" />
-                    <span>+91 63076 07882</span>
+                    <span>{phone}</span>
                   </p>
                   <p className="flex items-center gap-2">
                     <MailIcon className="h-5 w-5 text-green-600" />
-                    <span>info@starlletsolution.com</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <MailIcon className="h-5 w-5 text-green-600" />
-                    <span>hr@starlletsolution.com</span>
+                    <span>{email}</span>
                   </p>
                 </div>
               </div>

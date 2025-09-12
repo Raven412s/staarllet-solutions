@@ -77,7 +77,6 @@ export default function EnquiryForm({
       });
 
       if (res.ok) {
-        const data = await res.json();
         // Use type-specific success message
         const message = successMessages[type] || "Request submitted successfully";
         toast.success(message);

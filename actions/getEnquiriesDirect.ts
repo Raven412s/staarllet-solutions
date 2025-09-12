@@ -1,6 +1,7 @@
 import { getUser } from "@/lib/getUser";
 import { connectToDb } from "@/lib/mongodb";
 import Enquiry from "@/models/Enquiry";
+import "@/models"
 
 export async function getEnquiriesDirect(params: {
   page?: string;

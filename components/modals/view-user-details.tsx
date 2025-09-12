@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { IUser } from '@/models/User';
 import { AchievementType, BlogType, CourseType, EnquiryType } from "@/types/user";
 import { Download, Eye, FileText } from "lucide-react";
 import Image from "next/image";

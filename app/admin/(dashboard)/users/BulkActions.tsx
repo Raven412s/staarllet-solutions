@@ -1,8 +1,7 @@
 'use client';
 
-import { IUser } from '@/models/User';
 import { Button } from '@/components/ui/button';
-import { Mail, Ban, User, Trash2 } from 'lucide-react';
+import { Ban, Mail, Trash2, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { IUserDto } from './UsersTable';
 

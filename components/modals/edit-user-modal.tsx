@@ -1,6 +1,7 @@
 // components/modals/edit-user-modal.tsx
 "use client";
-import React, { useState } from 'react';
+import { IUserDto } from '@/app/admin/(dashboard)/users/UsersTable';
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -23,16 +25,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Edit } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { Edit } from "lucide-react";
+import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { IUser } from '@/models/User'; // Use type import to avoid runtime issues
-import { IUserDto } from '@/app/admin/(dashboard)/users/UsersTable';
+import { z } from "zod";
 
 // Validation schema
 const editUserSchema = z.object({

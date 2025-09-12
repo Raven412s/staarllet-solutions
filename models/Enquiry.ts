@@ -7,7 +7,7 @@ export interface IEnquiry extends Document {
   email: string;
   phone: string;
   message?: string;
-  type: "forCallback" | "forCourses" | "forMock" | "forResumeReview" | "other";
+  type: "forContact" | "forCallback" | "forCourses" | "forMock" | "forResumeReview" | "other";
   course?: mongoose.Types.ObjectId; // <-- added for "forCourses"
   resume?: string;
   called?: boolean;
@@ -23,7 +23,7 @@ const EnquirySchema: Schema = new Schema(
     message: { type: String },
     type: {
       type: String,
-      enum: ["forCallback", "forCourses", "forMock", "forResumeReview", "other"],
+      enum: ["forContact", "forCallback", "forCourses", "forMock", "forResumeReview", "other"],
       required: true,
     },
     course: {

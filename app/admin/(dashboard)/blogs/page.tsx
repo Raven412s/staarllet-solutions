@@ -107,7 +107,7 @@ const router = useRouter()
 
   useEffect(() => {
     filterBlogs();
-  }, [blogs, searchTerm, statusFilter]);
+  }, [blogs, searchTerm, statusFilter,]);
 
   const fetchBlogs = async () => {
     try {
