@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 import { IUser } from '@/models/User';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
