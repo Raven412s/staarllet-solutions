@@ -5,6 +5,10 @@ import Image from "next/image";
 
 
 // Import shadcn/ui components
+import BuyCourseButton from "@/components/accessibility/BuyCourseButton";
+import { ReviewsTab } from "@/components/courses/ReviewTab";
+import { VideoModal } from "@/components/modals/VideoModal";
+import GetAQuoteModal from "@/components/modals/get-a-quote";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -12,13 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCourse } from "@/data/courses";
-import { VideoModal } from "@/components/modals/VideoModal";
-import GetAQuoteModal from "@/components/modals/get-a-quote";
-import { ReviewsTab } from "@/components/courses/ReviewTab";
 
 // Client component that uses the course data
 export async function CourseDetailContent({ courseId }: { courseId: string }) {
-
     const course = await getCourse(courseId);
 
     if (!course) {
@@ -26,14 +26,20 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
             <div className="min-h-screen flex items-center justify-center text-center">
                 <div>
                     <h1 className="text-2xl font-bold mb-2">❌ Course not found</h1>
-                    <p className="text-muted-foreground">Please check the link or browse our available courses.</p>
+                    <p className="text-muted-foreground">
+                        Please check the link or browse our available courses.
+                    </p>
                 </div>
             </div>
         );
     }
 
-    const totalLessons = course.syllabus.reduce((acc, module) => acc + module.lessons.length, 0);
-    
+    const totalLessons = course.syllabus.reduce(
+        (acc, module) => acc + module.lessons.length,
+        0
+    );
+
+
     return (
         <SectionWrapper
             navbarSpacing="loose"
@@ -133,10 +139,8 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-3">
-                                            <Button className="w-full cursor-not-allowed pointer-events-auto bg-gradient-to-r from-green-600 to-green-800 text-white py-4 rounded-xl font-semibold text-lg hover:from-green-700 hover:to-green-900 transition-all transform hover:scale-[1.02] h-auto">
-                                                Coming Soon
-                                            </Button>
+                                        <div className="space-y-3 w-full">
+                                            <BuyCourseButton course={course} />
                                             <GetAQuoteModal course={course._id.toString()}><Button variant="outline" className="w-full border-2 hover:cursor-pointer text-gray-700 py-3 rounded-xl font-semibold h-auto">
                                                 Get a Quote
                                             </Button></GetAQuoteModal>
