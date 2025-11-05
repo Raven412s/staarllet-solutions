@@ -40,10 +40,10 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
         0
     );
 
-    const initialReviews = (course: ICourse)=>{
-        if(course.fakeReviews)
+    const initialReviews = (course: ICourse) => {
+        if (course.fakeReviews)
             return course.fakeReviews
-        else 
+        else
             return course.reviews
     }
 
@@ -239,8 +239,13 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                                         <h3 className="font-semibold text-lg text-gray-800">{module.title}</h3>
                                                         <p className="text-gray-600 mt-1">{module.description}</p>
                                                         <p className="text-sm text-gray-500 mt-2">
-                                                            {module.lessons.length} lessons • {module.lessons.reduce((acc, lesson) => acc + lesson.duration, 0)} minutes
+                                                            {module.lessons.length} lessons
+                                                            {(() => {
+                                                                const totalDuration = module.lessons.reduce((acc, lesson) => acc + lesson.duration, 0);
+                                                                return totalDuration > 0 ? ` • ${totalDuration} minutes` : "";
+                                                            })()}
                                                         </p>
+
                                                     </div>
                                                 </AccordionTrigger>
                                                 <AccordionContent className="p-6 bg-white border-t border-gray-200">
@@ -252,7 +257,9 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                                                         <Play className="w-4 h-4 text-green-600" />
                                                                         <span className="font-medium text-gray-800">{lesson.title}</span>
                                                                     </div>
-                                                                    <span className="text-sm text-gray-500">{lesson.duration} min</span>
+                                                                    {lesson.duration > 0 && (
+                                                                        <span className="text-sm text-gray-500">{lesson.duration} min</span>
+                                                                    )}
                                                                 </CardContent>
                                                             </Card>
                                                         ))}
