@@ -73,8 +73,14 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                                 />
                                             ))}
                                         </div>
-                                        <span className="font-medium">{course.rating}</span>
-                                        <span className="text-green-200">({course.studentsEnrolled.toLocaleString()} students)</span>
+                                        {course.fakeRating?
+                                            <span className="font-medium">{course.fakeRating}</span>:
+                                            <span className="font-medium">{course.rating}</span>
+                                        }
+                                        {course.fakeStudentsEnrolled?
+                                            <span className="text-green-200">({course.fakeStudentsEnrolled.toLocaleString()} students)</span>:
+                                            <span className="text-green-200">({course.studentsEnrolled.toLocaleString()} students)</span>
+                                        }
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <User className="w-4 h-4" />

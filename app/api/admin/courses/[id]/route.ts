@@ -57,11 +57,46 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const course = await Course.findByIdAndUpdate(
-      id, 
-      body, 
-      { new: true, runValidators: true }
-    );
+    // Debug: log incoming body to ensure fake fields are present
+    console.log('[admin][PUT] update course body:', JSON.stringify(body));
+
+    // Use document find -> set -> save to ensure subdocuments/arrays are applied correctly
+    const courseDoc = await Course.findById(id);
+    if (!courseDoc) {
+      return NextResponse.json({ error: 'Course not found' }, { status: 404 });
+    }
+
+    // Transform requirements if needed (same logic as POST)
+    if (Array.isArray(body.requirements) && body.requirements.length > 0) {
+      if (typeof body.requirements[0] === 'object' && body.requirements[0].value !== undefined) {
+        courseDoc.requirements = body.requirements.map((r: any) => r.value).filter(Boolean);
+      } else if (typeof body.requirements[0] === 'string') {
+        courseDoc.requirements = body.requirements;
+      }
+    } else if (Array.isArray(body.requirements) && body.requirements.length === 0) {
+      courseDoc.requirements = [];
+    }
+
+    // Assign remaining simple fields from body onto document
+    const updatableFields = [
+      'title','subtitle','description','thumbnail','introVideo','price','discountedPrice','currency','instructor',
+      'whatYouWillLearn','level','duration','language','category','status','studentsEnrolled','rating',
+      'fakeStudentsEnrolled','fakeRating','faqs','syllabus','reviews','fakeReviews'
+    ];
+
+    updatableFields.forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(body, key)) {
+        // @ts-ignore
+        courseDoc[key] = body[key];
+      }
+    });
+
+    await courseDoc.save();
+
+    // Debug: log updated course
+    console.log('[admin][PUT] updated course result:', courseDoc.toJSON());
+
+    const course = courseDoc;
 
     if (!course) {
       return NextResponse.json(

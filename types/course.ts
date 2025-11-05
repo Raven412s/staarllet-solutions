@@ -28,7 +28,9 @@ export interface CoursesResponse {
 
 export interface ICourseReview {
   user: string;
+  userEmail?: string;
   rating: number;
   comment: string;
-  createdAt: Date;
+  // schema uses `date` for review timestamp; make it optional here
+  date?: Date;
 }

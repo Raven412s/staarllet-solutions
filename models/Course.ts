@@ -49,11 +49,14 @@ export interface ICourse extends Document {
   category: string;
   status: "published" | "draft";
   studentsEnrolled: number;
+  fakeStudentsEnrolled?: number;
   rating: number;
+  fakeRating?: number;
   requirements: string[];
   syllabus: Module[];
   faqs: FAQ[];
   reviews: Review[];
+  fakeReviews?: Review[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -80,7 +83,9 @@ const CourseSchema = new Schema<ICourse>(
     category: { type: String, required: true },
     status: { type: String, default: "draft" },
     studentsEnrolled: { type: Number, default: 0 },
+    fakeStudentsEnrolled: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
+    fakeRating: { type: Number, default: 0 },
     requirements: [{ type: String }],
     syllabus: [
       {
@@ -103,6 +108,15 @@ const CourseSchema = new Schema<ICourse>(
       },
     ],
     reviews: [
+      {
+        user: { type: String, required: true },
+        userEmail: { type: String }, // Add email field
+        rating: { type: Number, min: 1, max: 5, required: true },
+        comment: { type: String, required: true },
+        date: { type: Date, default: Date.now },
+      },
+    ],
+    fakeReviews: [
       {
         user: { type: String, required: true },
         userEmail: { type: String }, // Add email field

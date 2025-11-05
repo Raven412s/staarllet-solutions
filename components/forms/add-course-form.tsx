@@ -82,6 +82,20 @@ export const addCourseSchema = z
       )
       .optional()
       .default([]),
+    // Social proof / fake stats to increase credibility (optional)
+    fakeStudentsEnrolled: z.coerce.number().min(0).optional().default(0),
+    fakeRating: z.coerce.number().min(0).max(5).optional().default(0),
+    fakeReviews: z
+      .array(
+        z.object({
+          user: z.string().min(1, "Name is required"),
+          userEmail: z.string().optional(),
+          rating: z.coerce.number().min(0).max(5),
+          comment: z.string().optional(),
+        })
+      )
+      .optional()
+      .default([]),
   })
   .refine(
     (data) => {
@@ -262,6 +276,9 @@ export default function AddCourseForm() {
         },
       ],
       faqs: [],
+      fakeStudentsEnrolled: 0,
+      fakeRating: 0,
+      fakeReviews: [],
     },
     mode: "onBlur",
   });
@@ -278,6 +295,7 @@ export default function AddCourseForm() {
   const whatYouWillLearnFA = useFieldArray({ control, name: "whatYouWillLearn" });
   const syllabusFA = useFieldArray({ control, name: "syllabus" });
   const faqsFA = useFieldArray({ control, name: "faqs" });
+  const fakeReviewsFA = useFieldArray({ control, name: "fakeReviews" });
 
   const onSubmit = async (values: AddCourseFormValues) => {
     // Clean empty values
@@ -735,6 +753,128 @@ export default function AddCourseForm() {
                 )}
               </div>
             ))}
+          </div>
+        </section>
+
+        <Separator />
+
+        {/* Social proof: fake students, rating and reviews (optional) */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-lg">Social Proof (optional)</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FormField
+              control={control}
+              name="fakeStudentsEnrolled"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Displayed Students Enrolled</FormLabel>
+                  <FormControl>
+                    <Input type="number" min={0} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={control}
+              name="fakeRating"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Displayed Rating (0–5)</FormLabel>
+                  <FormControl>
+                    <Input type="number" step="0.1" min={0} max={5} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex items-end">
+              <div className="text-sm text-muted-foreground">Optional: add a few sample reviews to show on the course page.</div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium">Sample Reviews</h4>
+              <Button type="button" variant="secondary" size="sm" onClick={() => fakeReviewsFA.append({ user: "", userEmail: "", rating: 5, comment: "" })}>
+                <Plus className="w-4 h-4 mr-1" /> Add Review
+              </Button>
+            </div>
+
+            {fakeReviewsFA.fields.map((field, idx) => (
+              <div key={field.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 rounded-lg border">
+                <FormField
+                  control={control}
+                  name={`fakeReviews.${idx}.user`}
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-4">
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Reviewer name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={control}
+                  name={`fakeReviews.${idx}.rating`}
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel>Rating</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.1" min={0} max={5} {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={control}
+                  name={`fakeReviews.${idx}.userEmail`}
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-3">
+                      <FormLabel>Email (optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="email@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={control}
+                  name={`fakeReviews.${idx}.comment`}
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-3">
+                      <FormLabel>Comment</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Short comment" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="md:col-span-12 flex justify-end">
+                  <Button type="button" variant="ghost" size="icon" onClick={() => fakeReviewsFA.remove(idx)}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+
+            {fakeReviewsFA.fields.length === 0 && (
+              <div className="text-muted-foreground text-sm">No sample reviews added.</div>
+            )}
           </div>
         </section>
 

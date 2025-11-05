@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Check if user already reviewed this course
     const course = await Course.findById(courseId);
     const existingReview = course.reviews.find(
-      (review: ICourseReview) => review.user === user.email
+      (review: ICourseReview) => review.userEmail === user.email
     );
 
     if (existingReview) {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     // Add new review
     const newReview = {
       user: userName,
-      email: user.email, // Store email to check for existing reviews
+      userEmail: user.email, // Store email to check for existing reviews
       rating,
       comment,
       date: new Date(),
