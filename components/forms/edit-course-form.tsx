@@ -202,7 +202,7 @@ export default function EditCourseForm({ course }: EditCourseFormProps) {
             })) || [],
             fakeStudentsEnrolled: course.fakeStudentsEnrolled || 0,
             fakeRating: course.fakeRating || 0,
-            fakeReviews: course.fakeReviews?.map((r: any) => ({
+            fakeReviews: course.fakeReviews?.map((r: { user?: string; userEmail?: string; rating?: number; comment?: string }) => ({
                 user: r.user || "",
                 userEmail: r.userEmail || "",
                 rating: r.rating || 0,

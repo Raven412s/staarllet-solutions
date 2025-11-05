@@ -69,7 +69,9 @@ export async function PUT(
     // Transform requirements if needed (same logic as POST)
     if (Array.isArray(body.requirements) && body.requirements.length > 0) {
       if (typeof body.requirements[0] === 'object' && body.requirements[0].value !== undefined) {
-        courseDoc.requirements = body.requirements.map((r: any) => r.value).filter(Boolean);
+        courseDoc.requirements = body.requirements
+        .map((r: { value?: string }) => r.value)
+        .filter(Boolean);
       } else if (typeof body.requirements[0] === 'string') {
         courseDoc.requirements = body.requirements;
       }
@@ -84,14 +86,13 @@ export async function PUT(
       'fakeStudentsEnrolled','fakeRating','faqs','syllabus','reviews','fakeReviews'
     ];
 
+    const docAsRecord = courseDoc as unknown as Record<string, unknown>;
+
     updatableFields.forEach((key) => {
       if (Object.prototype.hasOwnProperty.call(body, key)) {
-        // @ts-ignore
-        courseDoc[key] = body[key];
+        docAsRecord[key] = body[key];
       }
-    });
-
-    await courseDoc.save();
+    });    await courseDoc.save();
 
     // Debug: log updated course
     console.log('[admin][PUT] updated course result:', courseDoc.toJSON());
