@@ -123,7 +123,8 @@ const CourseCard = ({ course }: { course: ICourse }) => {
                     <div className="flex items-center">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
                         <span>{avgRating.toFixed(1)}</span>
-                        <span className="ml-1">({course.reviews?.length || 0})</span>
+                        {course.fakeReviews?<span className="ml-1">({course.fakeReviews?.length + course.reviews?.length})</span>:
+                        <span className="ml-1">({course.reviews?.length})</span>}
                     </div>
                     <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />

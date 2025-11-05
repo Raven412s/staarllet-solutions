@@ -23,8 +23,14 @@ export function ReviewsTab({ courseId, initialReviews }: ReviewsTabProps) {
       try {
         const response = await fetch(`/api/courses/${courseId}/review`);
         if (response.ok) {
-          const data = await response.json();
-          setReviews(data.reviews);
+          const data = (await response.json()) as { reviews: Review[] };
+          setReviews(prev => {
+            // Prevent duplicates based on _id or comment text if your fake ones don't have IDs
+            const newOnes = data.reviews.filter(
+              (r: Review) => !prev.some(pr => pr._id === r._id || pr.comment === r.comment)
+            );
+            return [...prev, ...newOnes];
+          });
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -41,12 +47,12 @@ export function ReviewsTab({ courseId, initialReviews }: ReviewsTabProps) {
   return (
     <>
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Student Reviews</h2>
-      
-      <ReviewForm 
-        courseId={courseId} 
-        onReviewSubmitted={handleReviewSubmitted} 
+
+      <ReviewForm
+        courseId={courseId}
+        onReviewSubmitted={handleReviewSubmitted}
       />
-      
+
       <div className="space-y-6">
         {reviews.map((review, index) => (
           <Card key={index} className="p-6 rounded-xl">

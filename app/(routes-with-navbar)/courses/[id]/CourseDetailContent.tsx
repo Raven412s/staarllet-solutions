@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getCourse } from "@/data/courses";
+import { ICourse } from "@/models/Course";
 
 // Client component that uses the course data
 export async function CourseDetailContent({ courseId }: { courseId: string }) {
@@ -39,6 +40,12 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
         0
     );
 
+    const initialReviews = (course: ICourse)=>{
+        if(course.fakeReviews)
+            return course.fakeReviews
+        else 
+            return course.reviews
+    }
 
     return (
         <SectionWrapper
@@ -67,22 +74,22 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                     <div className="flex items-center gap-2">
                                         <div className="flex">
                                             {[...Array(5)].map((_, i) => (
-                                               course.fakeRating? <Star
+                                                course.fakeRating ? <Star
                                                     key={i}
                                                     className={`w-5 h-5 ${i < Math.floor(course.fakeRating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
                                                 /> :
-                                                <Star
-                                                    key={i}
-                                                    className={`w-5 h-5 ${i < Math.floor(course.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
-                                                />
+                                                    <Star
+                                                        key={i}
+                                                        className={`w-5 h-5 ${i < Math.floor(course.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
+                                                    />
                                             ))}
                                         </div>
-                                        {course.fakeRating?
-                                            <span className="font-medium">{course.fakeRating}</span>:
+                                        {course.fakeRating ?
+                                            <span className="font-medium">{course.fakeRating}</span> :
                                             <span className="font-medium">{course.rating}</span>
                                         }
-                                        {course.fakeStudentsEnrolled?
-                                            <span className="text-green-200">({course.fakeStudentsEnrolled.toLocaleString()} students)</span>:
+                                        {course.fakeStudentsEnrolled ?
+                                            <span className="text-green-200">({course.fakeStudentsEnrolled.toLocaleString()} students)</span> :
                                             <span className="text-green-200">({course.studentsEnrolled.toLocaleString()} students)</span>
                                         }
                                     </div>
@@ -133,7 +140,10 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                         <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                                             <div className="flex items-center gap-2">
                                                 <Users className="w-4 h-4" />
-                                                <span>{course.studentsEnrolled.toLocaleString()} enrolled</span>
+                                                {course.fakeStudentsEnrolled ?
+                                                    <span>({course.fakeStudentsEnrolled.toLocaleString()} enrolled)</span> :
+                                                    <span>({course.studentsEnrolled.toLocaleString()} enrolled)</span>
+                                                }
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <Award className="w-4 h-4" />
@@ -254,7 +264,7 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                 </TabsContent>
 
                                 <TabsContent value="reviews" className="mt-6">
-                                    <ReviewsTab courseId={courseId} initialReviews={course.reviews} />
+                                    <ReviewsTab courseId={courseId} initialReviews={initialReviews(course)} />
                                 </TabsContent>
 
                                 <TabsContent value="faq" className="mt-6">

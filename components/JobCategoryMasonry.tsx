@@ -77,7 +77,6 @@ function JobCard({ position, idx }: { position: JobPosition; idx: number }) {
     >
       <Image
         fill
-        quality={100}
         src={position.img}
         alt={position.label}
         className="w-full h-full object-cover"
