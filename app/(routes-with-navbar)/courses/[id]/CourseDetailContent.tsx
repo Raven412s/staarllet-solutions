@@ -67,6 +67,10 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                     <div className="flex items-center gap-2">
                                         <div className="flex">
                                             {[...Array(5)].map((_, i) => (
+                                               course.fakeRating? <Star
+                                                    key={i}
+                                                    className={`w-5 h-5 ${i < Math.floor(course.fakeRating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
+                                                /> :
                                                 <Star
                                                     key={i}
                                                     className={`w-5 h-5 ${i < Math.floor(course.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'}`}
