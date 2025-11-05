@@ -281,7 +281,6 @@ export async function CourseDetailContent({ courseId }: { courseId: string }) {
                                         </Avatar>
                                         <div>
                                             <h4 className="font-semibold text-gray-800">{course.instructor}</h4>
-                                            <p className="text-sm text-gray-600">Senior Full Stack Developer</p>
                                         </div>
                                     </div>
                                 </CardContent>
